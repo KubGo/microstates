@@ -1,0 +1,917 @@
+{% extends "base.html" %}
+{% block title %}
+<!-- Description of data  -->
+<h1>
+    Comparison of listening and imagining for {{name}}-{{activity}} with {{method}} clustering
+</h1>
+<h2>Global explained variance <em>{{method}}</em>: </h2>
+<div class=fourcol>
+    <div>
+    <h2>Guided imaginary</h2>
+    {%for state, gevVal in GEV[0].items()%}
+    <h3>{{state}} - {{gevVal|round(3, 'floor')}} </h3>
+    {% endfor%}
+    </div>
+    <div>
+    <h2>Self imaginary</h2>
+    {%for state, gevVal in GEV[1].items()%}
+    <h3>{{state}} - {{gevVal|round(3, 'floor')}} </h3>
+    {% endfor%}
+    </div>
+
+</div>
+
+
+<div class="fourcol">
+    {% if analyse_breaks %}
+    <div>
+        <h3>Start break</h3>
+        Number of samples: {{n_samples[2]}} <br>
+        Number of EEG channels: {{n_channels[2]}} <br>
+        Number of microstates(clusters): {{n_maps[2]}}
+    </div>
+    {% endif %}
+    <div>
+        <h3>Guided imaginary</h3>
+        Number of samples: {{n_samples[0]}} <br>
+        Number of EEG channels: {{n_channels[0]}} <br>
+        Number of microstates(clusters): {{n_maps[0]}}
+    </div>
+
+    <div>
+        <h3>Self imaginary</h3>
+        Number of samples: {{n_samples[1]}} <br>
+        Number of EEG channels: {{n_channels[1]}} <br>
+        Number of microstates(clusters): {{n_maps[1]}}
+    </div>
+    {% if analyse_breaks %}
+    <div>
+        <h3>End break</h3>
+        Number of samples: {{n_samples[3]}} <br>
+        Number of EEG channels: {{n_channels[3]}} <br>
+        Number of microstates(clusters): {{n_maps[3]}}
+    </div>
+    {% endif %}
+</div>
+{% endblock %}
+
+<!-- GFP -->
+
+{% block results %}
+<h1>
+    Global Field Potential Energy (GFP)
+    <h1>
+        <div class="fourcol">
+            {% if analyse_breaks %}
+            <div class="container">
+                <h4>
+                    start break
+                </h4>
+                <img src="../start_break/images/pca_alpha_wave.jpg">
+            </div>
+            {% endif %}
+            <div class="container">
+                <h4>
+                    listening
+                </h4>
+                <img src="../listening/images/pca_alpha_wave.jpg">
+            </div>
+            <div class="container">
+                <h4>
+                    imagining
+                </h4>
+                <img src="../imagining/images/pca_alpha_wave.jpg">
+            </div>
+            {% if analyse_breaks %}
+            <div class="container">
+                <h4>
+                    end break
+                </h4>
+                <img src="../end_break/images/pca_alpha_wave.jpg">
+            </div>
+            {% endif %}
+        </div>
+        <!--peak colors-->
+            <div class="fourcol">
+                <div class="container">
+                    <h4>
+                        listening
+                    </h4>
+                    <img src="../listening/images/peaks.jpg" alt="peaks">
+                </div>
+                <div class="container">
+                    <h4>
+                        imagining
+                    </h4>
+                    <img src="../imagining/images/peaks.jpg" alt="peaks">
+                </div>
+            </div>
+
+
+        <hr>
+        {% if separate_states %}
+        <h1>Clustered microstates</h1>
+            <div class="fourcol"></div>
+            <div class="container">
+                <h1>
+                    Listening:
+                </h1>
+                <img src="../listening/images/microstates.jpg" alt="clustered microstates photos">
+            </div>
+            <div class="container">
+                <h1>
+                    Imagining:
+                </h1>
+                <img src="../imagining/images/microstates.jpg" alt="clustered microstates photos">
+            </div>
+        {% else %}
+        <div class="container">
+            <h1>
+                Clustered microstates:
+            </h1>
+            <img src="../images/microstates.jpg" alt="clustered microstates photos">
+        </div>
+        {% endif %}
+        <hr>
+
+        <!-- Empirical probabilities  -->
+
+        <h1>
+            Empirical probabilities of states
+        </h1>
+        <div class="fourcol">
+            {% if analyse_breaks %}
+
+            <div class="container">
+                {% if p_empirical is not defined %}
+                <h1>
+                    No probabilities given.
+                </h1>
+                {% else %}
+                <h1>
+                    start break
+                </h1>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[2]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for p in p_empirical[2] %}
+                        <td>{{ p|round(3, 'floor') }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            {% endif %}
+
+            <div class="container">
+                {% if p_empirical is not defined %}
+                <h1>
+                    No probabilities given.
+                </h1>
+                {% else %}
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[0]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for p in p_empirical[0] %}
+                        <td>{{ p|round(3, 'floor') }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            <div class="container">
+                {% if p_empirical is not defined %}
+                <h1>
+                    No probabilities given.
+                </h1>
+                {% else %}
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[0]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for p in p_empirical[1] %}
+                        <td>{{ p|round(3, 'floor') }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            {% if analyse_breaks%}
+            <div class="container">
+                {% if p_empirical is not defined %}
+                <h1>
+                    No probabilities given.
+                </h1>
+                {% else %}
+                <h1>
+                    end break
+                </h1>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[3]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for p in p_empirical[3] %}
+                        <td>{{ p|round(3, 'floor') }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+
+            </div>
+            {% endif %}
+
+        </div>
+
+        <!-- Times of microstates  -->
+
+        <h1>Time of occurrence of each state [s]</h1>
+
+        <div class="fourcol">
+
+            {% if analyse_breaks %}
+            <div class="container">
+                {% if time_occurrences is not defined %}
+                <h1>
+                    No data of time occurrences at breaks.
+                </h1>
+                {% else %}
+                <h1>
+                    start break<br>
+                    Total time: {{ total_time[2] }}
+                </h1>
+                <a href="../start_break/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[2]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for i in range(n_maps[2]) %}
+                        <td>{{ (p_empirical[2][i] * total_time[2]) | round(2)}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>min</th>
+                        <th>max</th>
+                        <th>mean</th>
+                        <th>std</th>
+                    </tr>
+                    <tr>
+                        {% if stats is defined %}
+                        <td>{{ stats[2]['min']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[2]['max']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[2]['mean']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[2]['std']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="container">
+                {% if time_occurrences is not defined %}
+                <h1>
+                    No data of time occurrences.
+                </h1>
+                {% else %}
+                <h1>
+                    listening<br>
+                    Total time: {{ total_time[0] }}
+                </h1>
+                <a href="../listening/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[0]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for i in range(n_maps[0]) %}
+                        <td>{{ (p_empirical[0][i] * total_time[0]) | round(2)}}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            <div class="container">
+                {% if time_occurrences is not defined %}
+                <h1>
+                    No data of time occurrences.
+                </h1>
+                {% else %}
+                <h1>
+                    Imagining<br>
+                    Total time: {{ total_time[1] }}
+                </h1>
+                <a href="../imagining/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[0]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for i in range(n_maps[1]) %}
+                        <td>{{ (p_empirical[1][i] * total_time[1]) | round(2) }}</td>
+                        {% endfor %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            {% if analyse_breaks %}
+            <div class="container">
+                {% if time_occurrences is not defined %}
+                <h1>
+                    No data of time occurrences at breaks.
+                </h1>
+                {% else %}
+                <h1>
+                    end break<br>
+                    Total time: {{ total_time[3] }}
+                </h1>
+                <a href="../listening/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        {% for i in range(n_maps[3]) %}
+                        <th>{{ i + 1 }}</th>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        {% for i in range(n_maps[3]) %}
+                        <td>{{ (p_empirical[3][i] * total_time[3]) | round(2)}}</td>
+                        {% endfor %}
+                    </tr>
+                    <tr>
+                        <th>min</th>
+                        <th>max</th>
+                        <th>mean</th>
+                        <th>std</th>
+                    </tr>
+                    <tr>
+                        {% if stats is defined %}
+                        <td>{{ stats[3]['min']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[3]['max']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[3]['mean']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if stats is defined %}
+                        <td>{{ stats[3]['std']|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+        </div>
+
+        <!-- Transition matrixes -->
+
+        <h1>Transition matrixes</h1>
+        <div class="fourcol">
+            {% if analyse_breaks %}
+            <div class="container">
+                <h1>
+                    Breaks <br>
+                </h1>
+                <img src="../start_break/images/transition_matrix.jpg">
+            </div>
+            {% endif %}
+            <div class="container">
+                <h1>
+                    Listening <br>
+                </h1>
+                <img src="../listening/images/transition_matrix.jpg">
+            </div>
+
+            <div class="container">
+                <h1>
+                    Imagining <br>
+                </h1>
+                <img src="../imagining/images/transition_matrix.jpg">
+            </div>
+            {% if analyse_breaks %}
+            <div class="container">
+                <h1>
+                    Breaks <br>
+                </h1>
+                <img src="../end_break/images/transition_matrix.jpg">
+            </div>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <!-- Entropies analysis -->
+
+        <h1> Entropies </h1>
+        <div class="fourcol">
+
+            {% if analyse_breaks %}
+
+            <div class="container">
+                {% if max_entropy is not defined
+                and entropy is not defined
+                and mc_entropy is not defined %}
+                <h1>
+                    No entropies calculations are given
+                </h1>
+                {% else %}
+                <h1>
+                    start break
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        {% if max_entropy is defined %}
+                        <td>{{ max_entropy[2]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if entropy is defined %}
+                        <td>{{ entropy[2]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if mc_entropy is defined %}
+                        <td>{{ mc_entropy[2]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+
+            </div>
+            {% endif %}
+
+            <div class="container">
+                {% if max_entropy is not defined
+                and entropy is not defined
+                and mc_entropy is not defined %}
+                <h1>
+                    No entropies calculations are given
+                </h1>
+                {% else %}
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        {% if max_entropy is defined %}
+                        <td>{{ max_entropy[0]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if entropy is defined %}
+                        <td>{{ entropy[0]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if mc_entropy is defined %}
+                        <td>{{ mc_entropy[0]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+
+            </div>
+
+            <div class="container">
+                {% if max_entropy is not defined
+                and entropy is not defined
+                and mc_entropy is not defined %}
+                <h1>
+                    No entropies calculations are given
+                </h1>
+                {% else %}
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        {% if max_entropy is defined %}
+                        <td>{{ max_entropy[1]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if entropy is defined %}
+                        <td>{{ entropy[1]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if mc_entropy is defined %}
+                        <td>{{ mc_entropy[1]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+
+            </div>
+
+            {% if analyse_breaks %}
+
+            <div class="container">
+                {% if max_entropy is not defined
+                and entropy is not defined
+                and mc_entropy is not defined %}
+                <h1>
+                    No entropies calculations are given
+                </h1>
+                {% else %}
+                <h1>
+                    end break
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        {% if max_entropy is defined %}
+                        <td>{{ max_entropy[3]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if entropy is defined %}
+                        <td>{{ entropy[3]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if mc_entropy is defined %}
+                        <td>{{ mc_entropy[3]|round(3, 'floor') }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+
+            </div>
+            {% endif %}
+        </div>
+
+        <hr>
+
+        <!-- Microstate gifs -->
+
+        <h1>Gif of actual state and best fitting microstate</h1>
+        <div class="fourcol">
+            {% if analyse_breaks %}
+            <div class="container">
+                <h1>
+                    end break <br>
+                </h1>
+                <img src="../start_break/images/microstates.gif">
+            </div>
+            {% endif %}
+            <div class="container">
+                <h1>
+                    imagining <br>
+                </h1>
+                <img src="../listening/images/microstates.gif">
+            </div>
+
+            <div class="container">
+                <h1>
+                    listening <br>
+                </h1>
+                <img src="../imagining/images/microstates.gif">
+            </div>
+            {% if analyse_breaks %}
+            <div class="container">
+                <h1>
+                    end break <br>
+                </h1>
+                <img src="../end_break/images/microstates.gif">
+            </div>
+            {% endif %}
+
+        </div>
+
+
+        <hr>
+
+        <!-- Statistical tests  -->
+
+        <h1>p-values of statistical test with alpha={{ alpha }}</h1>
+
+        <div class="fourcol">
+
+            {% if analyse_breaks %}
+            <div class="container">
+                {% if markov_p0 is not defined
+                and markov_p1 is not defined
+                and markov_p2 is not defined
+                and symmetry_p is not defined
+                and cond_homo_p is not defined %}
+                <h1>
+                    No statistical test results are given
+                </h1>
+                {% else %}
+                <h1>
+                    start break
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        {% if markov_p0 is defined %}
+                        <td>{{ markov_p0[2] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p1 is defined %}
+                        <td>{{ markov_p1[2] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p2 is defined %}
+                        <td>{{ markov_p2[2] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if symmetry_p is defined %}
+                        <td>{{ symmetry_p[2] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if cond_homo_p is defined %}
+                        <td>{{ cond_homo_p[2] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+
+            <div class="container">
+                {% if markov_p0 is not defined
+                and markov_p1 is not defined
+                and markov_p2 is not defined
+                and symmetry_p is not defined
+                and cond_homo_p is not defined %}
+                <h1>
+                    No statistical test results are given
+                </h1>
+                {% else %}
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        {% if markov_p0 is defined %}
+                        <td>{{ markov_p0[0] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p1 is defined %}
+                        <td>{{ markov_p1[0] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p2 is defined %}
+                        <td>{{ markov_p2[0] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if symmetry_p is defined %}
+                        <td>{{ symmetry_p[0] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if cond_homo_p is defined %}
+                        <td>{{ cond_homo_p[0] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+        </div>
+        <div class="fourcol">
+
+            <div class="container">
+                {% if markov_p0 is not defined
+                and markov_p1 is not defined
+                and markov_p2 is not defined
+                and symmetry_p is not defined
+                and cond_homo_p is not defined %}
+                <h1>
+                    No statistical test results are given
+                </h1>
+                {% else %}
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        {% if markov_p0 is defined %}
+                        <td>{{ markov_p0[1] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p1 is defined %}
+                        <td>{{ markov_p1[1] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p2 is defined %}
+                        <td>{{ markov_p2[1] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if symmetry_p is defined %}
+                        <td>{{ symmetry_p[1] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if cond_homo_p is defined %}
+                        <td>{{ cond_homo_p[1] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+
+            {% if analyse_breaks %}
+            <div class="container">
+                {% if markov_p0 is not defined
+                and markov_p1 is not defined
+                and markov_p2 is not defined
+                and symmetry_p is not defined
+                and cond_homo_p is not defined %}
+                <h1>
+                    No statistical test results are given
+                </h1>
+                {% else %}
+                <h1>
+                    end break
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        {% if markov_p0 is defined %}
+                        <td>{{ markov_p0[3] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p1 is defined %}
+                        <td>{{ markov_p1[3] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if markov_p2 is defined %}
+                        <td>{{ markov_p2[3] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if symmetry_p is defined %}
+                        <td>{{ symmetry_p[3] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+
+                        {% if cond_homo_p is defined %}
+                        <td>{{ cond_homo_p[3] }}</td>
+                        {% else %}
+                        <td>No data</td>
+                        {% endif %}
+                    </tr>
+                </table>
+                {% endif %}
+            </div>
+            {% endif %}
+
+        </div>
+
+        {% endblock %}

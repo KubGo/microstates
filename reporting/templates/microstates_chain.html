@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% block title %}
+{% if subfolder is defined %}
+<h1>{{ subfolder }}</h1>
+{% else %}
+<h1>Global</h1>
+{% endif %}
+<h1>
+    Microstates chain for for {{name}} - {{activity}} clustered with {{method}}
+</h1>
+<div class="fourcol">
+    {% if stats is defined %}
+        {% for microstate in stats.keys() %}
+        <div class="container">
+            <h1> {{microstate}} </h1>
+            <table>
+                <tr>
+                    <th>min</th>
+                    <th>max</th>
+                    <th>mean</th>
+                    <th>std</th>
+                </tr>
+                <tr>
+
+                <td>{{ stats[microstate]['min']|round(3, 'floor') }}</td>
+
+                <td>{{ stats[microstate]['max']|round(3, 'floor') }}</td>
+
+                <td>{{ stats[microstate]['mean']|round(3, 'floor') }}</td>
+
+                <td>{{ stats[microstate]['std']|round(3, 'floor') }}</td>
+                </tr>
+            </table>
+            {% set microstate_histogram = "../images/histogram_" ~ microstate ~ ".png" %}
+            <img src="{{microstate_histogram}}" alt="histogram">
+        </div>
+        {% endfor %}
+    {% else %}
+        <td>No data</td>
+    {% endif %}
+</div>
+
+{% endblock %}
+<hr>
+{% block results %}
+<div class="chains">
+    {% for microstate_time in microstate_times %}
+    <div class="chain">
+        <div class="item">
+            <h2>
+                {{ microstate_time[0] }}
+            </h2>
+        </div>
+
+        <div class="item">
+            {% set image_path = "../images/microstate_" ~ microstate_time[0] ~ ".png" %}
+            <img src="{{ image_path }}" alt="Dynamic image">
+        </div>
+
+        <div class="item">
+            <h2>
+                {{ microstate_time[1]|round(3, 'floor') }} s
+            </h2>
+        </div>
+    </div>
+    {% endfor %}
+</div>
+
+{% endblock %}
