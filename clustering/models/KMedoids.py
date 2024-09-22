@@ -1,5 +1,6 @@
 import numpy as np
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class KMedoidsModel(AbstractModel):
 
@@ -58,5 +59,6 @@ class KMedoidsModel(AbstractModel):
             k_medoids_maps = np.unique(idx)
             maps = [(data_copy[k_medoids_maps.astype(int)[k]]) for k in range(n_clusters)]
             maps_array = np.array(maps)
+            maps_array = reorder_microstates(maps)
             self.results.cluster_centers = maps_array
         return maps_array

@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.decomposition import PCA
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class PCAModel(AbstractModel):
     def cluster_microstates(self, data, copy=True, whiten=True, svd_solver="auto"):
@@ -40,5 +41,6 @@ class PCAModel(AbstractModel):
         pca.fit(data_cluster_norm)
         maps = np.array(pca.components_)
         del pca, params
+        maps = reorder_microstates(maps)
         self.results.cluster_centers = maps
         return maps

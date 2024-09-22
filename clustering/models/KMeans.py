@@ -1,5 +1,6 @@
 import numpy as np
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class KMeansModel(AbstractModel):
 
@@ -114,6 +115,8 @@ class KMeansModel(AbstractModel):
         maps = maps_list[k_opt]
         gev = gev_list[k_opt]
         L_ = L_list[k_opt]
+        
+        maps = reorder_microstates(np.array(maps))
 
         self.results.cluster_centers = maps
         return maps

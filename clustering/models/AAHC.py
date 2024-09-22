@@ -1,5 +1,6 @@
 import numpy as np
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class AAHCModel(AbstractModel):
 
@@ -88,6 +89,6 @@ class AAHCModel(AbstractModel):
                 c = np.real(c)
                 peak_maps[i] = c / np.sqrt(np.sum(c ** 2))
 
-        print()
+        peak_maps = reorder_microstates(peak_maps)
         self.results.cluster_centers = peak_maps
         return peak_maps

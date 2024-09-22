@@ -1,6 +1,7 @@
 import numpy as np
 from sklearn.decomposition import FastICA
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class ICAModel(AbstractModel):
     def cluster_microstates(self, data, algorithm='parallel', whiten='arbitrary-variance', fun='exp', max_iter=200):
@@ -44,5 +45,6 @@ class ICAModel(AbstractModel):
         ica = FastICA(**params)
         S_ = ica.fit_transform(data_cluster_norm)
         maps = np.array([ica.components_[k, :] for k in range(n_clusters)])
+        maps = reorder_microstates(maps)
         self.results.cluster_centers = maps
         return maps
