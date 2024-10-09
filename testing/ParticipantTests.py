@@ -21,7 +21,7 @@ BREAKS_TIMES_DICT = {
 class Participant:
     
     def __init__(self, path_to_participant_data,
-                 methods = ('kmeans', 'pca', 'ica', 'kmedoids', 'aahc'),
+                 methods = ('kmeans', 'pca', 'ica', 'kmedoids', 'aahc', 'dbscan'),
                  break_times_dict = None):
         self.tests_data = self.get_tests_data(path_to_participant_data)
         self.name = os.path.split(path_to_participant_data)[-1]

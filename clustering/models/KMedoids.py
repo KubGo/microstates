@@ -58,7 +58,7 @@ class KMedoidsModel(AbstractModel):
             dpsim[t + 1:, rep] = dpsim[t, rep]
             k_medoids_maps = np.unique(idx)
             maps = [(data_copy[k_medoids_maps.astype(int)[k]]) for k in range(n_clusters)]
-            maps_array = np.array(maps)
-            maps_array = reorder_microstates(maps)
-            self.results.cluster_centers = maps_array
+        maps_array = np.array(maps)
+        maps_array = reorder_microstates(maps_array)
+        self.results.cluster_centers = maps_array
         return maps_array

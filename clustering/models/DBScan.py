@@ -1,9 +1,10 @@
 import numpy as np
 from sklearn.cluster import DBSCAN
 from clustering.models.abstractModel import AbstractModel
+from clustering.utilities import reorder_microstates
 
 class DBScanModel(AbstractModel):
-    def cluster_microstates(self, data, eps=10, min_samples=10):
+    def cluster_microstates(self, data, eps=100, min_samples=10):
         """
         Prototype clustering with DBScan based on sklearn.cluster.DBSCAN
         Args:
@@ -45,13 +46,15 @@ class DBScanModel(AbstractModel):
         dbscan.fit(data_copy)
         cluster_centers = []
         # print(len(dbscan.core_sample_indices_))
-        # i = 0
-        # while len(cluster_centers) < 4:
-        #     index = dbscan.core_sample_indices_[i]
-        #     i+=1
-        #     if index < 0:
-        #         continue
-        #     cluster_center = peaks_data[index, :]
-        #     cluster_centers.append(cluster_center)
+        i = 0
+        while len(cluster_centers) < 4:
+            index = dbscan.core_sample_indices_[i]
+            i += 1
+            if index < 0:
+                continue
+            cluster_center = data_copy[index, :]
+            cluster_centers.append(cluster_center)
+            
         dbscan.core_sample_indices_
+        cluster_centers = reorder_microstates(np.array(cluster_centers))
         self.results.cluster_centers = np.array(cluster_centers)

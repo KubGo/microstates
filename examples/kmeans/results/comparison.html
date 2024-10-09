@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P28-kmeans-Fitness</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        a {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .chains {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 2px solid #333;
+        }
+
+        .chains .chain {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-item: center;
+            border: 2px solid #333;
+            padding: 10px;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+        }
+
+        .chains .chain h2 {
+            text-align: center;
+            margin: auto;
+        }
+
+        .chains .chain img {
+            max-width: 80%;
+            max-height: 80%;
+            display: block;
+            margin: auto;
+        }
+
+        .fourcol {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+    </style>
+</head>
+
+
+<body>
+    
+<!-- Description of data  -->
+<h1>
+    Comparison of listening and imagining for P28-Fitness with kmeans clustering
+</h1>
+<h2>Global explained variance <em>kmeans</em>: </h2>
+<div class=fourcol>
+    <div>
+    <h2>Guided imaginary</h2>
+    
+    <h3>microstate_0 - 0.133 </h3>
+    
+    <h3>microstate_1 - 0.082 </h3>
+    
+    <h3>microstate_2 - 0.058 </h3>
+    
+    <h3>microstate_3 - 0.244 </h3>
+    
+    <h3>total - 0.517 </h3>
+    
+    </div>
+    <div>
+    <h2>Self imaginary</h2>
+    
+    <h3>microstate_0 - 0.184 </h3>
+    
+    <h3>microstate_1 - 0.131 </h3>
+    
+    <h3>microstate_2 - 0.066 </h3>
+    
+    <h3>microstate_3 - 0.152 </h3>
+    
+    <h3>total - 0.535 </h3>
+    
+    </div>
+
+</div>
+
+
+<div class="fourcol">
+    
+    <div>
+        <h3>Guided imaginary</h3>
+        Number of samples: 9250 <br>
+        Number of EEG channels: 30 <br>
+        Number of microstates(clusters): 4
+    </div>
+
+    <div>
+        <h3>Self imaginary</h3>
+        Number of samples: 15000 <br>
+        Number of EEG channels: 30 <br>
+        Number of microstates(clusters): 4
+    </div>
+    
+</div>
+
+    
+<h1>
+    Global Field Potential Energy (GFP)
+    <h1>
+        <div class="fourcol">
+            
+            <div class="container">
+                <h4>
+                    listening
+                </h4>
+                <img src="../listening/images/pca_alpha_wave.jpg">
+            </div>
+            <div class="container">
+                <h4>
+                    imagining
+                </h4>
+                <img src="../imagining/images/pca_alpha_wave.jpg">
+            </div>
+            
+        </div>
+        <!--peak colors-->
+            <div class="fourcol">
+                <div class="container">
+                    <h4>
+                        listening
+                    </h4>
+                    <img src="../listening/images/peaks.jpg" alt="peaks">
+                </div>
+                <div class="container">
+                    <h4>
+                        imagining
+                    </h4>
+                    <img src="../imagining/images/peaks.jpg" alt="peaks">
+                </div>
+            </div>
+
+
+        <hr>
+        
+        <h1>Clustered microstates</h1>
+            <div class="fourcol"></div>
+            <div class="container">
+                <h1>
+                    Listening:
+                </h1>
+                <img src="../listening/images/microstates.jpg" alt="clustered microstates photos">
+            </div>
+            <div class="container">
+                <h1>
+                    Imagining:
+                </h1>
+                <img src="../imagining/images/microstates.jpg" alt="clustered microstates photos">
+            </div>
+        
+        <hr>
+
+        <!-- Empirical probabilities  -->
+
+        <h1>
+            Empirical probabilities of states
+        </h1>
+        <div class="fourcol">
+            
+
+            <div class="container">
+                
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        
+                        <th>1</th>
+                        
+                        <th>2</th>
+                        
+                        <th>3</th>
+                        
+                        <th>4</th>
+                        
+                    </tr>
+                    <tr>
+                        
+                        <td>0.266</td>
+                        
+                        <td>0.208</td>
+                        
+                        <td>0.201</td>
+                        
+                        <td>0.323</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+
+            <div class="container">
+                
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        
+                        <th>1</th>
+                        
+                        <th>2</th>
+                        
+                        <th>3</th>
+                        
+                        <th>4</th>
+                        
+                    </tr>
+                    <tr>
+                        
+                        <td>0.277</td>
+                        
+                        <td>0.236</td>
+                        
+                        <td>0.231</td>
+                        
+                        <td>0.254</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+
+            
+
+        </div>
+
+        <!-- Times of microstates  -->
+
+        <h1>Time of occurrence of each state [s]</h1>
+
+        <div class="fourcol">
+
+            
+
+            <div class="container">
+                
+                <h1>
+                    listening<br>
+                    Total time: 37.0
+                </h1>
+                <a href="../listening/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        
+                        <th>1</th>
+                        
+                        <th>2</th>
+                        
+                        <th>3</th>
+                        
+                        <th>4</th>
+                        
+                    </tr>
+                    <tr>
+                        
+                        <td>9.86</td>
+                        
+                        <td>7.7</td>
+                        
+                        <td>7.47</td>
+                        
+                        <td>11.96</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+
+            <div class="container">
+                
+                <h1>
+                    Imagining<br>
+                    Total time: 60.0
+                </h1>
+                <a href="../imagining/results/microstates_chain.html">For more details, click here.</a>
+                <table>
+                    <tr>
+                        
+                        <th>1</th>
+                        
+                        <th>2</th>
+                        
+                        <th>3</th>
+                        
+                        <th>4</th>
+                        
+                    </tr>
+                    <tr>
+                        
+                        <td>16.62</td>
+                        
+                        <td>14.21</td>
+                        
+                        <td>13.89</td>
+                        
+                        <td>15.28</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+
+            
+        </div>
+
+        <!-- Transition matrixes -->
+
+        <h1>Transition matrixes</h1>
+        <div class="fourcol">
+            
+            <div class="container">
+                <h1>
+                    Listening <br>
+                </h1>
+                <img src="../listening/images/transition_matrix.jpg">
+            </div>
+
+            <div class="container">
+                <h1>
+                    Imagining <br>
+                </h1>
+                <img src="../imagining/images/transition_matrix.jpg">
+            </div>
+            
+        </div>
+
+        <hr>
+
+        <!-- Entropies analysis -->
+
+        <h1> Entropies </h1>
+        <div class="fourcol">
+
+            
+
+            <div class="container">
+                
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        
+                        <td>2.0</td>
+                        
+
+                        
+                        <td>1.972</td>
+                        
+
+                        
+                        <td>1.133</td>
+                        
+                    </tr>
+                </table>
+                
+
+            </div>
+
+            <div class="container">
+                
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        <th>Maximal entropy</th>
+                        <th>Actual entropy</th>
+                        <th>Markov chain entropy</th>
+                    </tr>
+                    <tr>
+                        
+                        <td>2.0</td>
+                        
+
+                        
+                        <td>1.996</td>
+                        
+
+                        
+                        <td>1.16</td>
+                        
+                    </tr>
+                </table>
+                
+
+            </div>
+
+            
+        </div>
+
+        <hr>
+
+        <!-- Microstate gifs -->
+
+        <h1>Gif of actual state and best fitting microstate</h1>
+        <div class="fourcol">
+            
+            <div class="container">
+                <h1>
+                    imagining <br>
+                </h1>
+                <img src="../listening/images/microstates.gif">
+            </div>
+
+            <div class="container">
+                <h1>
+                    listening <br>
+                </h1>
+                <img src="../imagining/images/microstates.gif">
+            </div>
+            
+
+        </div>
+
+
+        <hr>
+
+        <!-- Statistical tests  -->
+
+        <h1>p-values of statistical test with alpha=[0.01]</h1>
+
+        <div class="fourcol">
+
+            
+
+            <div class="container">
+                
+                <h1>
+                    listening
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        
+                        <td>0.00E+1</td>
+                        
+
+                        
+                        <td>3.46E-31</td>
+                        
+
+                        
+                        <td>6.95E-9</td>
+                        
+
+                        
+                        <td>1.78E-51</td>
+                        
+
+                        
+                        <td>1.21E-79</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+        </div>
+        <div class="fourcol">
+
+            <div class="container">
+                
+                <h1>
+                    imagining
+                </h1>
+                <table>
+                    <tr>
+                        <th>Markov test order 0</th>
+                        <th>Markov test order 1</th>
+                        <th>Markov test order 2</th>
+                        <th>Symmetry test</th>
+                        <th>Conditional homogenity test</th>
+                    </tr>
+                    <tr>
+                        
+                        <td>0.00E+1</td>
+                        
+
+                        
+                        <td>6.58E-66</td>
+                        
+
+                        
+                        <td>9.34E-23</td>
+                        
+
+                        
+                        <td>2.91E-63</td>
+                        
+
+                        
+                        <td>1.82E-71</td>
+                        
+                    </tr>
+                </table>
+                
+            </div>
+
+            
+
+        </div>
+
+        
+</body>
+
+</html>
