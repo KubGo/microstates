@@ -25,3 +25,6 @@ participant = Participant("./data/P27")
 
 participant.runTests("./P27AllResults")
 ```
+## Reports
+
+Example report is placed inside the `examples` directory for clustering of k-means for sportsman from paper [Neural Oscillation During Mental Imagery in Sport: An Olympic Sailor Case Study](https://www.frontiersin.org/journals/human-neuroscience/articles/10.3389/fnhum.2021.669422/full). It is for `Fitness activity` with separate clustering of microstates for guided and self-produced imaginary.

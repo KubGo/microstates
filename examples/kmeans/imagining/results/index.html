@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>P28-kmeans-Fitness</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+
+        a {
+            text-align: center;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .chains {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            flex-wrap: wrap;
+            border: 2px solid #333;
+        }
+
+        .chains .chain {
+            display: flex;
+            justify-content: center;
+            flex-direction: column;
+            align-item: center;
+            border: 2px solid #333;
+            padding: 10px;
+            width: 200px;
+            height: 200px;
+            margin: 10px;
+        }
+
+        .chains .chain h2 {
+            text-align: center;
+            margin: auto;
+        }
+
+        .chains .chain img {
+            max-width: 80%;
+            max-height: 80%;
+            display: block;
+            margin: auto;
+        }
+
+        .fourcol {
+            display: flex;
+            justify-content: space-around;
+            flex-direction: row;
+            align-items: center;
+            flex-wrap: nowrap;
+        }
+    </style>
+</head>
+
+
+<body>
+    
+<h1>Results of calculation with kmeans for P28 - Fitness</h1>
+<h1>
+    Number of samples: 15000 <br />
+    Number of EEG channels: 30 <br />
+    Number of microstates(clusters): 4
+</h1>
+
+    
+<div class="container">
+    
+    <h4>Global Field Potential Energy (GFP):</h4>
+    <img src="../images/pca_alpha_wave.jpg" />
+    
+</div>
+
+<hr />
+<div class="container">
+    
+    <h1>Clustered microstates:</h1>
+    <img src="../images/microstates.jpg" alt="clustered microstates photos" />
+    
+</div>
+
+<hr />
+
+<div class="container">
+    
+    <h1>Empirical probabilities of states</h1>
+    <table>
+        <tr>
+            
+            <th>1</th>
+            
+            <th>2</th>
+            
+            <th>3</th>
+            
+            <th>4</th>
+            
+        </tr>
+        <tr>
+            
+            <td>0.277</td>
+            
+            <td>0.236</td>
+            
+            <td>0.231</td>
+            
+            <td>0.254</td>
+            
+        </tr>
+    </table>
+    
+</div>
+
+<div class="container">
+    
+    <h1>
+        Time of occurrence of each state [s]<br />
+        Total time of activity: 60.0
+    </h1>
+    <a href="microstates_chain.html">For more details, click here.</a>
+    <table>
+        <tr>
+            
+            <th>1</th>
+            
+            <th>2</th>
+            
+            <th>3</th>
+            
+            <th>4</th>
+            
+        </tr>
+        <tr>
+            
+            <td>16.62</td>
+            
+            <td>14.21</td>
+            
+            <td>13.89</td>
+            
+            <td>15.28</td>
+            
+        </tr>
+        <tr>
+            <th>min</th>
+            <th>max</th>
+            <th>mean</th>
+            <th>std</th>
+        </tr>
+        <tr>
+            
+            <td>No data</td>
+            
+
+            
+            <td>No data</td>
+            
+
+            
+            <td>No data</td>
+            
+
+            
+            <td>No data</td>
+            
+        </tr>
+    </table>
+    
+</div>
+
+<div class="container">
+    
+    <h1>Transition matrix:</h1>
+    <img src="../images/transition_matrix.jpg" />
+    
+</div>
+
+<hr />
+
+<div class="container">
+    
+    <h1>Entropies</h1>
+    <table>
+        <tr>
+            <th>Maximal entropy</th>
+            <th>Actual entropy</th>
+            <th>Markov chain entropy</th>
+        </tr>
+        <tr>
+            
+            <td>2.0</td>
+            
+
+            
+            <td>1.996</td>
+            
+
+            
+            <td>1.16</td>
+            
+        </tr>
+    </table>
+    
+</div>
+
+<hr />
+
+<div class="container">
+    
+    <h1>Gif of actual state and best fitting microstate</h1>
+    <img src="../images/microstates.gif" />
+    
+</div>
+
+<hr />
+
+<div class="container">
+    
+    <h1>p-values of statistical test with alpha=0.01</h1>
+    <table>
+        <tr>
+            <th>Markov test order 0</th>
+            <th>Markov test order 1</th>
+            <th>Markov test order 2</th>
+            <th>Symmetry test</th>
+            <th>Conditional homogenity test</th>
+        </tr>
+        <tr>
+            
+            <td>0.00E+1</td>
+            
+
+            
+            <td>6.58E-66</td>
+            
+
+            
+            <td>9.34E-23</td>
+            
+
+            
+            <td>2.91E-63</td>
+            
+
+            
+            <td>1.82E-71</td>
+            
+        </tr>
+    </table>
+    
+</div>
+
+</body>
+
+</html>
