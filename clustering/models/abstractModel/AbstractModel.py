@@ -306,8 +306,9 @@ class AbstractModel(ABC):
         for k in range(n_clusters):
             r = microstates_chain == k
             gev[k] = np.sum(gfp[r] ** 2 * corr[r, k] ** 2) / gfp2
+        microstates_labels = ['A', 'B', 'C', 'D']
         self.results.gev = {
-            f"microstate_{i}": gev[i] for i in range(n_clusters)
+            f"microstate {microstates_labels[i]}": gev[i] for i in range(n_clusters)
         }
         self.results.gev["total"] = gev.sum()
 

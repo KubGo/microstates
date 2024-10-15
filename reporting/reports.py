@@ -305,7 +305,8 @@ def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_st
         "stats": [r.stats for r in results],
         "analyse_breaks": analyse_breaks,
         "separate_states": separate_states,
-        "GEV": [r.gev for r in results]
+        "GEV": [r.gev for r in results],
+        "microstate_labels": ['A', 'B', 'C', 'D']
     }
 
     # Write html file

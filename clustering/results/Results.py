@@ -183,12 +183,14 @@ class Results:
         n_clusters = len(microstates)
         cm = mpl.colormaps['seismic']
         fig, ax = plt.subplots(1, n_clusters, figsize=(20, 5))
+        microstates_labels = ['A', 'B', 'C', 'D']
         for imap in range(n_clusters):
             ax[imap].imshow(eeg_to_map(microstates[imap]), cmap=cm, origin='lower')
             ax[imap].set_xticks([])
             ax[imap].set_xticklabels([])
             ax[imap].set_yticks([])
             ax[imap].set_yticklabels([])
+            ax[imap].set_title(f"{microstates_labels[imap]}", loc='center')
         title = f"Microstates map ({self.method.upper()})"
         ax[0].set_title(title, fontsize=16, fontweight='bold')
         # axbox = plt.axes([0.1, 0.05, 0.1, 0.1])
@@ -262,9 +264,12 @@ class Results:
             return
         destination_path = os.path.join(path, "transition_matrix.jpg")
         sn.set(font_scale=3)
+        microstates_labels = ['A', 'B', 'C', 'D']
         hm = sn.heatmap(transition_matrix,
                         annot=True,
-                        cmap="coolwarm")
+                        cmap="coolwarm",
+                        xticklabels=microstates_labels,
+                        yticklabels=microstates_labels)
 
         fig.savefig(destination_path)
         fig.clf()
@@ -359,6 +364,7 @@ class Results:
             "markov_p2": "{:.2E}".format(Decimal(str(self.p_markov_test_2))),
             "symmetry_p": "{:.2E}".format(Decimal(str(self.p_symmetry_test))),
             "cond_homo_p": "{:.2E}".format(Decimal(str(self.p_conditional_homogenity))),
+            "microstate_labels": ['A', 'B', 'C', 'D']
             # "stats": stats,
         }
         params_chain = {
@@ -367,7 +373,8 @@ class Results:
             "activity": activity,
             "microstate_times": microstate_times,
             "stats": stats,
-            "subfolder": subfolder
+            "subfolder": subfolder,
+            "microstate_labels": ['A', 'B', 'C', 'D']
         }
         # Prototype saving report
         save_report(results_path, params_index, params_chain)
