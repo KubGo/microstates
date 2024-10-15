@@ -190,9 +190,9 @@ class Results:
             ax[imap].set_xticklabels([])
             ax[imap].set_yticks([])
             ax[imap].set_yticklabels([])
-            ax[imap].set_title(f"{microstates_labels[imap]}", loc='center')
+            ax[imap].set_title(f"{microstates_labels[imap]}", loc='center', fontsize=16)
         title = f"Microstates map ({self.method.upper()})"
-        ax[0].set_title(title, fontsize=16, fontweight='bold')
+        fig.suptitle(title, fontsize=16, fontweight='bold')
         # axbox = plt.axes([0.1, 0.05, 0.1, 0.1])
         # text_box = TextBox(axbox, "Ordering: ", initial="[0, 1, 2, 3]")
         destination_path = os.path.join(path, "microstates.jpg")
