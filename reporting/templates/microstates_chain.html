@@ -12,7 +12,7 @@
     {% if stats is defined %}
         {% for microstate in stats.keys() %}
         <div class="container">
-            <h1> {{microstate}} </h1>
+            <h1> {{ microstate_labels[microstate | int] }} </h1>
             <table>
                 <tr>
                     <th>min</th>
@@ -48,7 +48,7 @@
     <div class="chain">
         <div class="item">
             <h2>
-                {{ microstate_time[0] }}
+                {{ microstate_labels[microstate_time[0] | int ] }}
             </h2>
         </div>
 

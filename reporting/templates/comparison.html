@@ -72,13 +72,13 @@
             {% endif %}
             <div class="container">
                 <h4>
-                    listening
+                    Guided imaginary
                 </h4>
                 <img src="../listening/images/pca_alpha_wave.jpg">
             </div>
             <div class="container">
                 <h4>
-                    imagining
+                    Self imaginary
                 </h4>
                 <img src="../imagining/images/pca_alpha_wave.jpg">
             </div>
@@ -95,13 +95,13 @@
             <div class="fourcol">
                 <div class="container">
                     <h4>
-                        listening
+                        Guided imaginary
                     </h4>
                     <img src="../listening/images/peaks.jpg" alt="peaks">
                 </div>
                 <div class="container">
                     <h4>
-                        imagining
+                        Self imaginary
                     </h4>
                     <img src="../imagining/images/peaks.jpg" alt="peaks">
                 </div>
@@ -114,13 +114,13 @@
             <div class="fourcol"></div>
             <div class="container">
                 <h1>
-                    Listening:
+                    Guided imaginary
                 </h1>
                 <img src="../listening/images/microstates.jpg" alt="clustered microstates photos">
             </div>
             <div class="container">
                 <h1>
-                    Imagining:
+                    Self imaginary
                 </h1>
                 <img src="../imagining/images/microstates.jpg" alt="clustered microstates photos">
             </div>
@@ -154,7 +154,7 @@
                 <table>
                     <tr>
                         {% for i in range(n_maps[2]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i]}}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -175,12 +175,12 @@
                 </h1>
                 {% else %}
                 <h1>
-                    listening
+                    Guided imaginary
                 </h1>
                 <table>
                     <tr>
                         {% for i in range(n_maps[0]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i]}}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -199,12 +199,12 @@
                 </h1>
                 {% else %}
                 <h1>
-                    imagining
+                    Self imaginary
                 </h1>
                 <table>
                     <tr>
                         {% for i in range(n_maps[0]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -229,7 +229,7 @@
                 <table>
                     <tr>
                         {% for i in range(n_maps[3]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -266,7 +266,7 @@
                 <table>
                     <tr>
                         {% for i in range(n_maps[2]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -317,14 +317,14 @@
                 </h1>
                 {% else %}
                 <h1>
-                    listening<br>
+                    Guided imaginary<br>
                     Total time: {{ total_time[0] }}
                 </h1>
                 <a href="../listening/results/microstates_chain.html">For more details, click here.</a>
                 <table>
                     <tr>
                         {% for i in range(n_maps[0]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -343,14 +343,14 @@
                 </h1>
                 {% else %}
                 <h1>
-                    Imagining<br>
+                    Self imaginary<br>
                     Total time: {{ total_time[1] }}
                 </h1>
                 <a href="../imagining/results/microstates_chain.html">For more details, click here.</a>
                 <table>
                     <tr>
                         {% for i in range(n_maps[0]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -377,7 +377,7 @@
                 <table>
                     <tr>
                         {% for i in range(n_maps[3]) %}
-                        <th>{{ i + 1 }}</th>
+                        <th>{{ microstate_labels[i] }}</th>
                         {% endfor %}
                     </tr>
                     <tr>
@@ -436,14 +436,14 @@
             {% endif %}
             <div class="container">
                 <h1>
-                    Listening <br>
+                    Guided imaginary <br>
                 </h1>
                 <img src="../listening/images/transition_matrix.jpg">
             </div>
 
             <div class="container">
                 <h1>
-                    Imagining <br>
+                    Self imaginary <br>
                 </h1>
                 <img src="../imagining/images/transition_matrix.jpg">
             </div>
@@ -517,7 +517,7 @@
                 </h1>
                 {% else %}
                 <h1>
-                    listening
+                    Guided imaginary
                 </h1>
                 <table>
                     <tr>
@@ -558,7 +558,7 @@
                 </h1>
                 {% else %}
                 <h1>
-                    imagining
+                    Self imaginary
                 </h1>
                 <table>
                     <tr>
@@ -651,14 +651,14 @@
             {% endif %}
             <div class="container">
                 <h1>
-                    imagining <br>
+                    Guided imaginary <br>
                 </h1>
                 <img src="../listening/images/microstates.gif">
             </div>
 
             <div class="container">
                 <h1>
-                    listening <br>
+                    Self imaginary <br>
                 </h1>
                 <img src="../imagining/images/microstates.gif">
             </div>
@@ -751,7 +751,7 @@
                 </h1>
                 {% else %}
                 <h1>
-                    listening
+                    Guided imaginary
                 </h1>
                 <table>
                     <tr>
@@ -809,7 +809,7 @@
                 </h1>
                 {% else %}
                 <h1>
-                    imagining
+                    Self imaginary
                 </h1>
                 <table>
                     <tr>
