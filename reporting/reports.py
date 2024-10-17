@@ -98,6 +98,14 @@ def save_results_to_df(path_to_pickle, activity=' ', imagining=' '):
         "P_D_B": result.transition_matrix[3][1],
         "P_D_C": result.transition_matrix[3][2],
         "P_D_D": result.transition_matrix[3][3],
+        "GEV_total": result.gev['total'],
+        "GEV_A": result.gev['microstate A'],
+        "GEV_B": result.gev['microstate B'],
+        "GEV_C": result.gev['microstate C'],
+        "GEV_D": result.gev['microstate D'],
+        "max_entropy": result.h_max,
+        "entropy": result.h,
+        "mc_entropy": result.h_mc
     }
     data = {key: [value] for key, value in data.items()}
     df = pd.DataFrame(data)
@@ -110,23 +118,31 @@ def save_all_sportsman_data_to_csv(path_to_files, method="kmeans"):
 
     df = pd.DataFrame()
 
+    test_csvs = {}
+    
     sportman_paths = {sportsman: os.path.join(path_to_files, sportsman) for sportsman in os.listdir(path_to_files) if match_data_folder(sportsman)}
     for sportsman, folder in sportman_paths.items():
         activities = {activity: os.path.join(folder, activity) for activity in os.listdir(folder)}
         for activity, activity_path in activities.items():
-            # Get listening pickle
-            listening_path = os.path.join(activity_path, method, "listening", "results")
-            listening_pickle = [os.path.join(listening_path, file) for file in os.listdir(listening_path) if file.endswith(".pickle")][0]
+            test_types = {test_type : os.path.join(activity_path, test_type) for test_type in os.listdir(activity_path)}
+            for test_type, test_path in test_types.items():
+                # Get test type and create its DataFrame
+                if not test_type in test_csvs:
+                    test_csvs[test_type] = pd.DataFrame()
+                # Get listening pickle
+                listening_path = os.path.join(test_path, method, "listening", "results")
+                listening_pickle = [os.path.join(listening_path, file) for file in os.listdir(listening_path) if file.endswith(".pickle")][0]
 
-            # Get imagining pickle
-            imagining_path = os.path.join(activity_path, method, "imagining", "results")
-            imagining_pickle = [os.path.join(imagining_path, file) for file in os.listdir(listening_path) if file.endswith(".pickle")][0]
+                # Get imagining pickle
+                imagining_path = os.path.join(test_path, method, "imagining", "results")
+                imagining_pickle = [os.path.join(imagining_path, file) for file in os.listdir(listening_path) if file.endswith(".pickle")][0]
 
-            listening_df = save_results_to_df(listening_pickle, activity=activity, imagining="guided")
-            imagining_df = save_results_to_df(imagining_pickle, activity=activity, imagining="self-guided")
-            df = pd.concat([df, listening_df, imagining_df], ignore_index=True)
+                listening_df = save_results_to_df(listening_pickle, activity=activity, imagining="guided")
+                imagining_df = save_results_to_df(imagining_pickle, activity=activity, imagining="self-guided")
+                test_csvs[test_type] = pd.concat([test_csvs[test_type], listening_df, imagining_df], ignore_index=True)
 
-    df.to_csv(os.path.join(path_to_files, "results.csv"), index=False)
+    for test, df in test_csvs.items():
+        df.to_csv(os.path.join(path_to_files, f"results_{test}.csv"), index=False)
 
 
 def progress(count, total, suffix=''):
@@ -325,7 +341,7 @@ def load_pickle(filename):
         filename: String,
         Path to a pickled file, e.g. results in this case
     Returns:
-        Path to a pickle file
+        Results class
     """
     if filename:
         with open(filename, 'rb') as file:
