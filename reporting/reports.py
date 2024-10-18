@@ -143,7 +143,13 @@ def save_all_sportsman_data_to_csv(path_to_files, method="kmeans"):
 
     for test, df in test_csvs.items():
         df.to_csv(os.path.join(path_to_files, f"results_{test}.csv"), index=False)
-
+        sportsmen = set(df['name'].to_list())
+        for sportsman in sportsmen:
+            sportsman_data = df[df['name'] == sportsman]
+            path_to_save = os.path.join(path_to_files, f"{test}_results")
+            if not os.path.exists(path_to_save):
+                os.makedirs(path_to_save)
+            sportsman_data.to_csv(os.path.join(path_to_save, f"{sportsman}_results.csv"))
 
 def progress(count, total, suffix=''):
     """
