@@ -55,6 +55,6 @@ class DBScanModel(AbstractModel):
             cluster_center = data_copy[index, :]
             cluster_centers.append(cluster_center)
             
-        dbscan.core_sample_indices_
+        cluster_centers = dbscan.core_sample_indices_
         cluster_centers = reorder_microstates(np.array(cluster_centers))
         self.results.cluster_centers = np.array(cluster_centers)
