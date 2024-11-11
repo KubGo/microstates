@@ -269,8 +269,7 @@ def reorder_microstates(microstates: np.array, reference_microstates = None):
         max_positions = np.argmax(corr, axis=1) # row max position
         # Get position of microstate with maximal correlation value
         current_position = np.argmax(max_corr)
-        new_position = max_positions[np.argmax(max_corr)]
-        # new_positions[current_position] = new_position
+        new_position = max_positions[current_position]
         reordered_microstates[new_position] = microstates[current_position]
         # Remove this microstate correlation from next iterations
         corr[:, new_position] = -1
