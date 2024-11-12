@@ -2,6 +2,13 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 
+from gui import language_dicts
+
+LANGUAGES = {
+    'en': language_dicts.en,
+    'pl': language_dicts.pl
+}
+
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
 customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "green", "dark-blue"
 
@@ -9,9 +16,10 @@ customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "gre
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        self.active_language = LANGUAGES['en']
 
         # configure window
-        self.title("CustomTkinter complex_example.py")
+        self.title("Mikrostany")
         self.geometry(f"{1100}x{580}")
 
         # configure grid layout (4x4)
@@ -31,32 +39,32 @@ class App(customtkinter.CTk):
         self.sidebar_button_2.grid(row=2, column=0, padx=20, pady=10)
         self.sidebar_button_3 = customtkinter.CTkButton(self.sidebar_frame)
         self.sidebar_button_3.grid(row=3, column=0, padx=20, pady=10)
-        self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text="Appearance Mode:", anchor="w")
+        self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, text=f"{self.active_language['appearance mode']}", anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
         self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
                                                                        command=self.change_appearance_mode_event)
         self.appearance_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 10))
-        self.language_label = customtkinter.CTkLabel(master=self.sidebar_frame, text="Language", anchor="w")
+        self.language_label = customtkinter.CTkLabel(master=self.sidebar_frame, text=f"{self.active_language['language']}", anchor="w")
         self.language_label.grid(row=7, column=0, padx=20, pady=(10,0))
-        self.language_selector = customtkinter.CTkSegmentedButton(master=self.sidebar_frame, values=["pl", "en"])
+        self.language_selector = customtkinter.CTkSegmentedButton(master=self.sidebar_frame, values=["pl", "en"], command=self.refresh_text)
         self.language_selector.grid(row=8, column=0, padx=20, pady=(5,20))
-
-        # create main entry and button
-        self.entry = customtkinter.CTkEntry(self, placeholder_text="CTkEntry")
-        self.entry.grid(row=3, column=1, columnspan=2, padx=(20, 0), pady=(20, 20), sticky="nsew")
-
-        self.main_button_1 = customtkinter.CTkButton(master=self, fg_color="transparent", border_width=2, text_color=("gray10", "#DCE4EE"))
-        self.main_button_1.grid(row=3, column=3, padx=(20, 20), pady=(20, 20), sticky="nsew")
-
-        # create textbox
-        self.textbox = customtkinter.CTkTextbox(self, width=250)
-        self.textbox.grid(row=0, column=1, padx=(20, 0), pady=(20, 0), sticky="nsew")
+        
+        self.home_screen_welcome = customtkinter.CTkLabel(self, width=250, 
+                                                          text=self.active_language['home_screen_text'])
+        self.home_screen_welcome.grid(row=0, column=1, padx=(20, 0), pady=(20,0), sticky="nsew")
         
         # set default values
         self.appearance_mode_optionemenu.set("System")
+        self.language_selector.set('en')
 
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
+    
+    def refresh_text(self, lang: str):
+        self.active_language = LANGUAGES[lang]
+        self.appearance_mode_label.configure(text=f"{self.active_language['appearance mode']}")
+        self.language_label.configure(text=f"{self.active_language['language']}")
+        self.home_screen_welcome.configure(text=self.active_language['home_screen_text'])
 
 if __name__ == "__main__":
     app = App()
