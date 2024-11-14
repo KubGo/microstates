@@ -25,6 +25,9 @@ class App(customtkinter.CTk):
 
 
     def init(self):
+        """Initialize main window of the app
+        
+        """
         # configure window
         self.title("Mikrostany")
         self.geometry(f"{1100}x{580}")
@@ -64,11 +67,23 @@ class App(customtkinter.CTk):
         self.appearance_mode_optionemenu.set("System")
         self.language_selector.set('en')
         self.refresh_text('en')
+        
+        
     def change_appearance_mode_event(self, new_appearance_mode: str):
+        """Change appearance mode for one of ['Light', 'Dark', 'System']
+        
+        Args:
+            new_appearance_mode (str): appearance mode to set
+        """
         customtkinter.set_appearance_mode(new_appearance_mode)
     
     
     def refresh_text(self, lang: str):
+        """Refresh texts to selected language
+
+        Args:
+            lang (str): Language to set
+        """
         self.active_language = LANGUAGES[lang]
         self.appearance_mode_label.configure(text=f"{self.active_language['appearance mode']}")
         self.language_label.configure(text=f"{self.active_language['language']}")
