@@ -16,8 +16,15 @@ customtkinter.set_default_color_theme("blue")  # Themes: "blue" (standard), "gre
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        
+        # Language dict
         self.active_language = LANGUAGES['en']
+        
+        # Initialize main window
+        self.init()
 
+
+    def init(self):
         # configure window
         self.title("Mikrostany")
         self.geometry(f"{1100}x{580}")
@@ -57,7 +64,6 @@ class App(customtkinter.CTk):
         self.appearance_mode_optionemenu.set("System")
         self.language_selector.set('en')
         self.refresh_text('en')
-
     def change_appearance_mode_event(self, new_appearance_mode: str):
         customtkinter.set_appearance_mode(new_appearance_mode)
     
