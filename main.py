@@ -2,11 +2,12 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 
-from gui import language_dicts
+from gui import MainWindow, AbstractWindow
+from gui.language_dicts import pl, en, LanguageHandler
 
 LANGUAGES = {
-    'en': language_dicts.en,
-    'pl': language_dicts.pl
+    'en': en,
+    'pl': pl
 }
 
 customtkinter.set_appearance_mode("System")  # Modes: "System" (standard), "Dark", "Light"
@@ -17,8 +18,9 @@ class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
         
-        # Language dict
+        # Language dict and handler
         self.active_language = LANGUAGES['en']
+        self.language_handler = LanguageHandler()
         
         # Initialize main window
         self.init()
@@ -46,7 +48,7 @@ class App(customtkinter.CTk):
         # Tabs navigation
         self.clustering_tab_button = customtkinter.CTkButton(self.sidebar_frame)
         self.clustering_tab_button.grid(row=1, column=0, padx=20, pady=10)
-        self.reports_tab_button = customtkinter.CTkButton(self.sidebar_frame)
+        self.reports_tab_button = customtkinter.CTkButton(self.sidebar_frame, command=self.set_window)
         self.reports_tab_button.grid(row=2, column=0, padx=20, pady=10)
         self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, anchor="w")
         # App settings
@@ -60,8 +62,8 @@ class App(customtkinter.CTk):
         self.language_selector.grid(row=8, column=0, padx=20, pady=(5,20))
         
         # Home screen message
-        self.home_screen_welcome = customtkinter.CTkLabel(self, width=250)
-        self.home_screen_welcome.grid(row=0, column=1, padx=(20, 0), pady=(20,0), sticky="nsew")
+        self.main_window = MainWindow(self, 'en')
+        self.language_handler.register(self.main_window)
         
         # set default values
         self.appearance_mode_optionemenu.set("System")
@@ -84,10 +86,10 @@ class App(customtkinter.CTk):
         Args:
             lang (str): Language to set
         """
+        self.language_handler.refresh_text(lang)
         self.active_language = LANGUAGES[lang]
         self.appearance_mode_label.configure(text=f"{self.active_language['appearance mode']}")
         self.language_label.configure(text=f"{self.active_language['language']}")
-        self.home_screen_welcome.configure(text=self.active_language['home_screen_text'])
         self.clustering_tab_button.configure(text=self.active_language['clustering_btn'])
         self.reports_tab_button.configure(text=self.active_language['reports_btn'])
 

@@ -1,3 +1,5 @@
+from gui.windows import AbstractWindow
+
 pl = {
     "appearance mode": "Wygląd:",
     "language": "Język:",
@@ -25,3 +27,18 @@ en = {
     "reports_btn": "Reports",
     
 }
+
+class LanguageHandler():
+    
+    def __init__(self):
+        self.windows = []
+    
+    def register(self, window: AbstractWindow):
+        self.windows.append(window)
+
+    def unregister(self, window: AbstractWindow):
+        self.windows.remove(window)
+        
+    def refresh_text(self, language):
+        for window in self.windows:
+            window.refresh_text(language)
