@@ -15,7 +15,7 @@ class SideBar(AbstractWindow):
         super(AbstractWindow, self).__init__(master, width=140, corner_radius=0)
         self.current_language = LANGUAGES[language]
         self.init()
-        self.refresh_text('en')
+        self.refresh_text(self.current_language)
         
     def init(self):
         self.logo_label = customtkinter.CTkLabel(self, font=customtkinter.CTkFont(size=20, weight="bold"), text="Microstates")
@@ -47,13 +47,13 @@ class SideBar(AbstractWindow):
         self.show()
         
     
-    def refresh_text(self, language: str):
+    def refresh_text(self, language: dict):
         """Refresh texts for the language
 
         Args:
-            language (str): Language to change the texts to
+            language (dict): Language to change the texts to
         """
-        self.current_language = LANGUAGES[language]
+        self.current_language = language
         self.appearance_mode_label.configure(text=f"{self.current_language['appearance mode']}")
         self.language_label.configure(text=f"{self.current_language['language']}")
         self.clustering_tab_button.configure(text=self.current_language['clustering_btn'])
@@ -65,7 +65,8 @@ class SideBar(AbstractWindow):
         Args:
             language (str): Language to change texts to
         """
-        self.master.refresh_text(language)
+        self.current_language = LANGUAGES[language]
+        self.master.refresh_text(self.current_language)
     
     def show(self):
         """Show sidebar on the app

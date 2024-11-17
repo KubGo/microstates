@@ -14,7 +14,7 @@ class MainWindow(AbstractWindow):
         super(AbstractWindow, self).__init__(master)
         self.current_language = LANGUAGES[language]
         self.init()
-        self.refresh_text('en')
+        self.refresh_text(self.current_language)
 
     
     def init(self):
@@ -22,8 +22,8 @@ class MainWindow(AbstractWindow):
         self.welcome_message.pack(anchor='center')
         self.show()
     
-    def refresh_text(self, language):
-        self.current_language = LANGUAGES[language]
+    def refresh_text(self, language:dict):
+        self.current_language = language
         self.welcome_message.configure(text=self.current_language['home_screen_text'])
     
     def show(self):

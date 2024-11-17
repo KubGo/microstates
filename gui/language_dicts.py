@@ -39,6 +39,6 @@ class LanguageHandler():
     def unregister(self, window: AbstractWindow):
         self.windows.remove(window)
         
-    def refresh_text(self, language):
+    def refresh_text(self, language: dict):
         for window in self.windows:
             window.refresh_text(language)
