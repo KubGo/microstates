@@ -2,7 +2,7 @@ import tkinter
 import tkinter.messagebox
 import customtkinter
 
-from gui import MainWindow, AbstractWindow
+from gui import MainWindow, AbstractWindow, SideBar
 from gui.language_dicts import pl, en, LanguageHandler
 
 LANGUAGES = {
@@ -40,35 +40,12 @@ class App(customtkinter.CTk):
         self.grid_rowconfigure((0, 1, 2), weight=1)
 
         # create sidebar frame with widgets
-        self.sidebar_frame = customtkinter.CTkFrame(self, width=140, corner_radius=0)
-        self.sidebar_frame.grid(row=0, column=0, rowspan=4, sticky="nsew")
-        self.sidebar_frame.grid_rowconfigure(4, weight=1)
-        self.logo_label = customtkinter.CTkLabel(self.sidebar_frame, text="Mikrostates", font=customtkinter.CTkFont(size=20, weight="bold"))
-        self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
-        # Tabs navigation
-        self.clustering_tab_button = customtkinter.CTkButton(self.sidebar_frame)
-        self.clustering_tab_button.grid(row=1, column=0, padx=20, pady=10)
-        self.reports_tab_button = customtkinter.CTkButton(self.sidebar_frame, command=self.set_window)
-        self.reports_tab_button.grid(row=2, column=0, padx=20, pady=10)
-        self.appearance_mode_label = customtkinter.CTkLabel(self.sidebar_frame, anchor="w")
-        # App settings
-        self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10, 0))
-        self.appearance_mode_optionemenu = customtkinter.CTkOptionMenu(self.sidebar_frame, values=["Light", "Dark", "System"],
-                                                                       command=self.change_appearance_mode_event)
-        self.appearance_mode_optionemenu.grid(row=6, column=0, padx=20, pady=(10, 10))
-        self.language_label = customtkinter.CTkLabel(master=self.sidebar_frame, anchor="w")
-        self.language_label.grid(row=7, column=0, padx=20, pady=(10,0))
-        self.language_selector = customtkinter.CTkSegmentedButton(master=self.sidebar_frame, values=["pl", "en"], command=self.refresh_text)
-        self.language_selector.grid(row=8, column=0, padx=20, pady=(5,20))
+        self.side_bar = SideBar(self, 'en')
+        self.language_handler.register(self.side_bar)
         
-        # Home screen message
+        # home screen message
         self.main_window = MainWindow(self, 'en')
         self.language_handler.register(self.main_window)
-        
-        # set default values
-        self.appearance_mode_optionemenu.set("System")
-        self.language_selector.set('en')
-        self.refresh_text('en')
         
         
     def change_appearance_mode_event(self, new_appearance_mode: str):
