@@ -22,9 +22,11 @@ class SideBar(AbstractWindow):
         self.logo_label.grid(row=0, column=0, padx=20, pady=(20, 10))
         # Tabs navigation
         self.clustering_tab_button = customtkinter.CTkButton(self)
-        self.clustering_tab_button.grid(row=1, column=0, padx=20, pady=10)
+        self.home_button = customtkinter.CTkButton(self)
+        self.home_button.grid(row=1, column=0, padx=20, pady=10)
+        self.clustering_tab_button.grid(row=2, column=0, padx=20, pady=10)
         self.reports_tab_button = customtkinter.CTkButton(self)
-        self.reports_tab_button.grid(row=2, column=0, padx=20, pady=10)
+        self.reports_tab_button.grid(row=3, column=0, padx=20, pady=10)
         # App Settings
         self.appearance_mode_label = customtkinter.CTkLabel(self, anchor="w")
         self.appearance_mode_label.grid(row=5, column=0, padx=20, pady=(10,0))
@@ -58,6 +60,7 @@ class SideBar(AbstractWindow):
         self.language_label.configure(text=f"{self.current_language['language']}")
         self.clustering_tab_button.configure(text=self.current_language['clustering_btn'])
         self.reports_tab_button.configure(text=self.current_language['reports_btn'])
+        self.home_button.configure(text=self.current_language['home_button'])
     
     def global_refresh_text(self, language: str):
         """Change texts for whole app

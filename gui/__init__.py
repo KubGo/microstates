@@ -3,3 +3,4 @@ from .windows.AbstractWindow import AbstractWindow
 from .windows.MainWindow import MainWindow 
 from .windows.SideBar import SideBar
 from .windows.RefreshTextIntefrace import RefreshTextInterface
+from .windows.ClusteringWindow import ClusteringWindow

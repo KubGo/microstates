@@ -11,6 +11,7 @@ pl = {
         """,
     "clustering_btn": "Klasteryzacja",
     "reports_btn": "Raporty",
+    "home_button": "Strona główna",
     
 }
 
@@ -25,6 +26,7 @@ en = {
         """,
     "clustering_btn": "Clustering",
     "reports_btn": "Reports",
+    "home_button": "Home page"
     
 }
 
