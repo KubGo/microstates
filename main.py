@@ -95,10 +95,7 @@ class App(customtkinter.CTk):
         if self.clustering_window is None:
             self.clustering_window = ClusteringWindow(self, self.current_language)
             self.language_handler.register(self.clustering_window)
-        self.change_window(self.clustering_window)
-        
-    
-        
+        self.change_window(self.clustering_window)  
 
 if __name__ == "__main__":
     app = App()
