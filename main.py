@@ -74,19 +74,30 @@ class App(customtkinter.CTk):
         """
         self.current_language = lang
         self.language_handler.refresh_text(lang)
+        
+    def change_window(self, new_window: AbstractWindow):
+        """Change current window to new one
+
+        Args:
+            new_window (AbstractWindow): New window to display
+        """
+        if self.CURRENT_WINDOW == new_window:
+            return
+        self.CURRENT_WINDOW.hide()
+        new_window.show()
+        self.CURRENT_WINDOW = new_window
+        
 
     def change_to_home_window(self):
-        self.CURRENT_WINDOW.hide()
-        self.main_window.show()
-        self.CURRENT_WINDOW = self.main_window
+        self.change_window(self.main_window)
 
     def change_to_clustering_window(self):
         if self.clustering_window is None:
             self.clustering_window = ClusteringWindow(self, self.current_language)
             self.language_handler.register(self.clustering_window)
-        self.CURRENT_WINDOW.hide()
-        self.clustering_window.show()
-        self.CURRENT_WINDOW = self.clustering_window
+        self.change_window(self.clustering_window)
+        
+    
         
 
 if __name__ == "__main__":
