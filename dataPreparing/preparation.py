@@ -2,7 +2,8 @@ import os
 import pandas as pd
 from art import tprint
 
-def prepare_folder(path_to_folder, destination_path, time=5, fs=250):
+def prepare_folder(path_to_folder: str, destination_path: str, time_start=5,
+                   time_end=None, fs=250):
     """
     Prepares data in folder by deleting time x fs samples from start and end at each file
     Args:
@@ -21,13 +22,17 @@ def prepare_folder(path_to_folder, destination_path, time=5, fs=250):
     files = [os.path.join(path_to_folder, f) for f in os.listdir(path_to_folder) if
              os.path.isfile(os.path.join(path_to_folder, f))]
     for file in files:
-        prepare_file(file, destination_path, time, fs)
+        prepare_file(file, 
+                     destination_path,
+                     time_start=time_start,
+                     time_end=time_end,
+                     fs=fs)
         print(f"{os.path.basename(file)} - done.")
     print(f"Data in {os.path.abspath(path_to_folder)} prepared \n"
           f"and saved in {os.path.abspath(destination_path)}")
 
 
-def prepare_file(path_to_file, destination_path=None, time=5, fs=250):
+def prepare_file(path_to_file: str, destination_path=None, time_start=5, time_end=None, fs=250):
     """
     Prepare data in file by deleting time x fs samples from start and end
     Args:
@@ -43,6 +48,8 @@ def prepare_file(path_to_file, destination_path=None, time=5, fs=250):
     Returns: numpy array,
         Returns cleaned numpy array that is saved in destination path as csv file
     """
+    if time_end is None:
+        time_end = time_start
     if not os.path.exists(path_to_file):
         print("There is no such a file.")
         return
@@ -52,8 +59,9 @@ def prepare_file(path_to_file, destination_path=None, time=5, fs=250):
         print("Only csv files reading")
         return
     data = pd.read_csv(path_to_file, index_col=0)
-    samples_to_delete = round(time * fs)
-    clean_data = data.iloc[samples_to_delete:-samples_to_delete, :]
+    samples_to_delete_start = round(time_start * fs)
+    samples_to_delete_end = round(time_end * fs)
+    clean_data = data.iloc[samples_to_delete_start:-samples_to_delete_end, :]
     if destination_path is not None:
         if not os.path.exists(destination_path):
             os.makedirs(destination_path)
