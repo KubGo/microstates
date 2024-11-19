@@ -1,4 +1,5 @@
 from gui.windows.AbstractWindow import AbstractWindow
+from dataPreparing import SignalCleaner
 from customtkinter import filedialog
 from pathlib import Path
 import customtkinter
@@ -78,7 +79,7 @@ class ClusteringWindow(AbstractWindow):
         # Other functionalities (blank columns for now)
         self.clustering_options_frame.grid_columnconfigure(2, weight=1)
         # Clustering button
-        self.clustering_btn = customtkinter.CTkButton(self.clustering_options_frame, text="Cluster")
+        self.clustering_btn = customtkinter.CTkButton(self.clustering_options_frame, text="Cluster", command=self.clustering)
         self.clustering_btn.grid(row=0, column=4, rowspan=2, padx=20, pady=10, sticky="e")
     
     def refresh_text(self, language):
@@ -96,3 +97,16 @@ class ClusteringWindow(AbstractWindow):
             filetypes=[('csv files', "*.csv")]
         )
         self.file_paths = [filepath.name for filepath in filepaths]
+        
+    def clustering(self):
+        frequency = int(self.signal_frequency.get())  if self.signal_frequency.get() else 250
+        time_start = float(self.start_remove_time_entry.get()) if self.start_remove_time_entry.get() else 0
+        time_end = float(self.end_remove_time_entry.get()) if self.end_remove_time_entry.get() else 0
+        signal_cleaner = SignalCleaner(
+            frequency=frequency,
+            time_start=time_start,
+            time_end=time_end)
+        
+        print(frequency)
+        print(time_start)
+        print(time_end)
