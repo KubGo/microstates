@@ -5,20 +5,31 @@ from flet import (
     icons,
     colors,
     padding,
+    Page
 )
+
+from abc import ABC, abstractmethod
+
+class SideBarObserver(ABC):
+    def __init__(self):
+        pass
+    @abstractmethod
+    def updateMainContent(self, window_number: int):
+        pass
 
 class SideBar(NavigationRail):
     
-    def __init__(self, page, *args, **kwargs):
+    def __init__(self, page: Page, app: SideBarObserver, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        # self.app_layout = app_layout
+        self.page = page
+        self.app = app
         self.selected_index=1,
         self.label_type="all",
         self.on_change=self.top_nav_change,
         self.bgcolor=colors.BLUE_GREY,
         self.extended=True,
         self.expand=True,
-        self.page = page
+        
         self.elevation = 10
         self.top_nav_items = [
             
@@ -29,7 +40,8 @@ class SideBar(NavigationRail):
                     label="Home",
                     icon=icons.HOME,
                     selected_icon_content=Icon(icons.HOME_OUTLINED),
-                    padding=padding.all(5)
+                    padding=padding.all(5),
+                    
                 ),
                 NavigationRailDestination(
                     label="Clustering",
@@ -48,5 +60,5 @@ class SideBar(NavigationRail):
         self.on_change= self.top_nav_change
 
     def top_nav_change(self, e: NavigationRailDestination):
-        self.selected_index = e.selected_icon.index
-        self.update()
+        self.app.updateMainContent(e.control.selected_index)
+

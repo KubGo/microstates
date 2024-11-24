@@ -5,14 +5,10 @@ from flet import (
 )
 
 from app_layout import AppLayout
-
+from microstates_app import MicrostatesApp
 
 def main(page: Page):
-    page.theme = Theme(color_scheme_seed='blue')
-
-    test =  AppLayout(page)
-    page.add(test)
-    page.update()
+    MicrostatesApp(page)
     
 if __name__ == "__main__":
     flet.app(main)

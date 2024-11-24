@@ -1,25 +1,27 @@
 from flet import (
     Page,
     Row,
+    Column,
     icons,
     colors,
     IconButton,
-    alignment
+    alignment,
+    Container
 )
 
 from sidebar import SideBar
-from home_page import HomePage
+from main_contents import AbstractMainContent, HomePageContent, ClusteringPageContent
 
 class AppLayout(Row):
     def __init__(
         self, 
-        #app,
         page: Page,
+        sidebar: SideBar,
+        mainContent: AbstractMainContent,
         *args,
         **kwargs
     ):
-        super().__init__(*args, **kwargs)
-        # self.app = app
+        super(Row, self).__init__(*args, **kwargs)
         self.page = page
         self.toggle_nav_bar = IconButton(
             icon=icons.ARROW_CIRCLE_LEFT,
@@ -27,12 +29,13 @@ class AppLayout(Row):
             selected=False,
             selected_icon=icons.ARROW_CIRCLE_RIGHT,
             on_click=self.toggle_nav_rail)
-        self.sidebar = SideBar(page)
-        self._active_view = HomePage(page)
+        self.sidebar = sidebar
+        self._active_view = mainContent
+        self.body = Container(content=self.active_view)
         self.controls = [
             self.sidebar,
             self.toggle_nav_bar,
-            self.active_view
+            self.body
         ]
         self.alignment = alignment.center
         self.vertical_alignment = alignment.top_center
@@ -45,7 +48,7 @@ class AppLayout(Row):
     @active_view.setter
     def active_view(self, view):
         self._active_view = view
-        self.update()
+        self.updateMainContent()
         
     def toggle_nav_rail(self, e):
         self.sidebar.visible = not self.sidebar.visible
