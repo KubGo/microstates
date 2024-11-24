@@ -13,7 +13,6 @@ class HomePageContent(AbstractMainContent):
 
     def __init__(self, page: Page):
         super().__init__(page)
-        self.page = page
         self.expand = True
         self.alignment = alignment.center
         self.horizontal_alignment = alignment.center
@@ -28,6 +27,7 @@ If You want to learn more about microstates, You can use this [GitHub page](http
                 md_text,
                 extension_set=MarkdownExtensionSet.GITHUB_WEB,
                 on_tap_link=lambda e: self.page.launch_url(e.data),
+                fit_content=True
             )
         ]
 

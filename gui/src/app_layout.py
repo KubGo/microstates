@@ -31,7 +31,13 @@ class AppLayout(Row):
             on_click=self.toggle_nav_rail)
         self.sidebar = sidebar
         self._active_view = mainContent
-        self.body = Container(content=self.active_view)
+        self.body = Container(
+            content=self.active_view,
+            margin=10,
+            padding=10,
+            alignment=alignment.center,
+            expand=True
+            )
         self.controls = [
             self.sidebar,
             self.toggle_nav_bar,
