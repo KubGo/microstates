@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
-from flet import Column, Page, Markdown, alignment, MarkdownExtensionSet, Row, Text
-
+from flet import Column, Page, Markdown, alignment, MarkdownExtensionSet, Row, Text, FilePicker, ElevatedButton, FilePickerResultEvent, icons, ListView, Container
+import flet as ft
 
 class AbstractMainContent(ABC, Column):
 
@@ -34,7 +34,56 @@ If You want to learn more about microstates, You can use this [GitHub page](http
 
 class ClusteringPageContent(AbstractMainContent):
 
+    def pick_files_results(e: FilePickerResultEvent, text: Text):
+        text.value = (
+            ", ".join(map(lambda f: f.name, e.files)) if e.files else "Cancelled!" 
+        )
+        text.update()
+
     def __init__(self, page: Page):
         super().__init__(page)
+        self.pick_files_dialog = FilePicker(on_result=self.pick_files_results)
+        self.page.overlay.append(self.pick_files_dialog)
+        self.files = []
+        self.files_paths = {}
+        self.selected_files = ListView(
+            controls=self.files,
+            height=90)
 
-        self.controls = [Row([Text("Chose a file with EEG data in csv format")])]
+        self.controls = [
+            Row(
+                [
+                    Text("Chose a file with EEG data in csv format"),
+                ElevatedButton(
+                    "Pick files",
+                    icon=icons.UPLOAD_FILE,
+                    on_click=lambda _: self.pick_files_dialog.pick_files(
+                        allow_multiple=True,
+                        initial_directory='/home/kuba/Desktop/test/file_1'
+                    )
+                ),
+                Container(
+                    Column(
+                        controls=[self.selected_files],
+                        expand=True,
+                        scroll=ft.ScrollMode.AUTO,
+                        ),
+                    width=200,
+                )
+                
+        ])
+                
+            ]
+        
+    def pick_files_results(self, e: FilePickerResultEvent):
+        files = [(f.name, f.path) for f in e.files]
+        self.update_selected_files(files)
+
+    def update_selected_files(self, files):
+        for file in files:
+            self.files.append(file[0])
+            self.files_paths[file[0]] = file[1]
+        self.selected_files.controls = [Text(file) for file in self.files]
+        self.selected_files.update()
+        
+
