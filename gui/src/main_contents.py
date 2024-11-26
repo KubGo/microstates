@@ -1,6 +1,7 @@
 from abc import ABC, abstractmethod
 from flet import Column, Page, Markdown, alignment, MarkdownExtensionSet, Row, Text, FilePicker, ElevatedButton, FilePickerResultEvent, icons, ListView, Container
 import flet as ft
+from file_read import FileList
 
 class AbstractMainContent(ABC, Column):
 
@@ -46,9 +47,7 @@ class ClusteringPageContent(AbstractMainContent):
         self.page.overlay.append(self.pick_files_dialog)
         self.files = []
         self.files_paths = {}
-        self.selected_files = ListView(
-            controls=self.files,
-            height=90)
+        self.selected_files = FileList()
 
         self.controls = [
             Row(
@@ -65,10 +64,10 @@ class ClusteringPageContent(AbstractMainContent):
                 Container(
                     Column(
                         controls=[self.selected_files],
-                        expand=True,
                         scroll=ft.ScrollMode.AUTO,
+                        expand=True,
                         ),
-                    width=200,
+                    expand=True
                 )
                 
         ])
@@ -81,9 +80,7 @@ class ClusteringPageContent(AbstractMainContent):
 
     def update_selected_files(self, files):
         for file in files:
-            self.files.append(file[0])
-            self.files_paths[file[0]] = file[1]
-        self.selected_files.controls = [Text(file) for file in self.files]
+            self.selected_files.add_file(file[0], file[1])
         self.selected_files.update()
         
 

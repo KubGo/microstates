@@ -14,8 +14,10 @@ def main(page: Page):
             thumb_visibility=True,
             thickness=10,
             radius=5
-        )
+        ),
+        color_scheme_seed="teal"
     )
+    page.update()
     MicrostatesApp(page)
     
 if __name__ == "__main__":
