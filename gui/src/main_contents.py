@@ -82,8 +82,9 @@ class ClusteringPageContent(AbstractMainContent):
             ]
         
     def pick_files_results(self, e: FilePickerResultEvent):
-        files = [(f.name, f.path) for f in e.files]
-        self.update_selected_files(files)
+        if e.files:
+            files = [(f.name, f.path) for f in e.files]
+            self.update_selected_files(files)
 
     def update_selected_files(self, files):
         for file in files:
