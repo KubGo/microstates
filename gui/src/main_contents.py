@@ -67,9 +67,16 @@ class ClusteringPageContent(AbstractMainContent):
                         scroll=ft.ScrollMode.AUTO,
                         expand=True,
                         ),
-                    expand=True
-                )
-                
+                    expand=True,
+                    bgcolor=ft.colors.WHITE,
+                    border_radius=ft.border_radius.all,
+
+                ),
+                ft.TextField(
+                    label="Signal frequency",
+                    value=250,
+                    hint_text="e.g. 250",
+                    on_change= lambda e: self.check_if_all_numeric(e))
         ])
                 
             ]
@@ -83,4 +90,11 @@ class ClusteringPageContent(AbstractMainContent):
             self.selected_files.add_file(file[0], file[1])
         self.selected_files.update()
         
-
+    def check_if_all_numeric(self, e: ft.ControlEvent):
+        text = e.control.value
+        if text.isdigit() or text == '':
+            e.control.error_text = None
+            e.control.update()
+        else:
+            e.control.error_text = "Only numbers are allowed!"
+            e.control.update()
