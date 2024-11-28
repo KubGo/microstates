@@ -3,7 +3,8 @@ from flet import (
     FletApp,
     View
 )
-from main_contents import HomePageContent, ClusteringPageContent
+from main_contents.home_page import HomePageContent
+from main_contents.clustering_page import ClusteringPageContent 
 from app_layout import AppLayout
 from sidebar import SideBar, SideBarObserver
 

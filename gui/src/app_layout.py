@@ -10,7 +10,7 @@ from flet import (
 )
 
 from sidebar import SideBar
-from main_contents import AbstractMainContent, HomePageContent, ClusteringPageContent
+from main_contents.interfaces import AbstractMainContent
 
 class AppLayout(Row):
     def __init__(
