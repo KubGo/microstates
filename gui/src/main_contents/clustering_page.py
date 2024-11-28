@@ -1,6 +1,7 @@
 from .interfaces import AbstractMainContent
 import flet as ft
 from .clustering_sections.file_picker import SelectFilesSection
+from .clustering_sections.delimiters_section import DelimiterSection
 
 class ClusteringPageContent(AbstractMainContent):
 
@@ -10,41 +11,19 @@ class ClusteringPageContent(AbstractMainContent):
         super().__init__(page)
         self.files = []
         self.files_paths = {}
-        self.select_files_section = SelectFilesSection(self)
+
         self.use_delimiters = False
-        self.delimiter_labels_test = ft.Text("No file selected")
-        self.delimiter_selector = ft.Row(
-            controls=[
-                ft.RadioGroup(content=ft.Column([
-                    ft.Text("Delimiter:"),
-                    ft.Row([
-                    ft.Radio(value="_", label="_", ),
-                    ft.Radio(value="-", label="-"),
-                    ft.Radio(value="|", label="|")
-                    ])
-                ]), value='_'),
-                ft.TextField(
-                    value="1",
-                    label='Index of the identifier',
-                    on_change= lambda e: self.check_if_all_numeric(e)
-                    ),
-                ft.TextField(
-                    value="2",
-                    label="Index of the activity",
-                    on_change= lambda e: self.check_if_all_numeric(e)
-                ),
-                self.delimiter_labels_test
-            ],
-        )
+        self.use_delimiters_checkbox = ft.Checkbox(
+            "Use delimitered file name for data labels", 
+            value=False)
+        # Sections
+        self.select_files_section = SelectFilesSection(self)
+        self.delimiters_section = DelimiterSection(self)
         self.controls = [
             self.select_files_section,
-            ft.Checkbox(
-            "Use delimitered file name for data labels", 
-            value=False,
-            on_change= lambda e: self.show_delimiters_options(e)),
-            self.delimiter_selector,
+            self.use_delimiters_checkbox,
+            self.delimiters_section,
             ]
-        self.delimiter_selector.visible = self.use_delimiters
 
         
 
