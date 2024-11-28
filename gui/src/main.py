@@ -15,7 +15,7 @@ def main(page: Page):
             thickness=10,
             radius=5
         ),
-        color_scheme_seed="teal"
+        color_scheme_seed="green"
     )
     page.update()
     MicrostatesApp(page)

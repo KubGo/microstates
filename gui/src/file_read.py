@@ -17,8 +17,8 @@ class FileList(ListView):
         self.controls.remove(file)
         self.update()
 
-
-
+    def get_file_names(self):
+        return [file.name for file in self.controls]
 
 class FileInterface(Row):
 
