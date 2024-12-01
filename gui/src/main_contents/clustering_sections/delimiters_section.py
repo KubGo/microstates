@@ -68,19 +68,33 @@ class ExampleText(AbstractFileObserver, ft.Column):
         self.horizontal_alignment = ft.alignment.center
         self.place_holder_text = "Select a file"
         self.file_name = ft.Text(self.place_holder_text, size=20, weight=ft.FontWeight.BOLD)
-        self.id = ft.Text()
-        self.activity = ft.Text()
+        self.id = ft.Text('', color=ft.colors.WHITE)
+        self.activity = ft.Text('', color=ft.colors.WHITE)
         self.delimiter = '_'
         self.controls = [
             self.file_name,
-            ft.Row([
-                ft.Text("Id: "),
+            ft.Container(content=
+                ft.Row([
+                ft.Text("Id: ", color=ft.colors.WHITE),
                 self.id
             ]),
-            ft.Row([
-                ft.Text("Activity: "),
+            bgcolor='#006f27',
+            margin= 2,
+            padding= 10,
+            border_radius=10,
+            )
+            ,
+            ft.Container(
+                content=ft.Row([
+                ft.Text("Activity: ", color=ft.colors.WHITE),
                 self.activity
-            ])
+            ]),
+            bgcolor='#006f27',
+            margin= 2,
+            padding= 10,
+            border_radius=10
+            )
+            
         ]
 
     def file_update(self, files):
