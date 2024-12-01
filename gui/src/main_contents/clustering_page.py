@@ -4,6 +4,7 @@ from .clustering_sections.file_picker import SelectFilesSection
 from .clustering_sections.delimiters_section import DelimiterSection
 from .clustering_sections.interfaces import AbstractFileObserver
 from .clustering_sections.signal_cutting import SignalCuttingSection
+from .clustering_sections.clustering_settings import ClusteringSettingsSection
 
 class ClusteringPageContent(AbstractMainContent):
 
@@ -24,6 +25,7 @@ class ClusteringPageContent(AbstractMainContent):
             on_change= lambda e: self.show_signal_cutting_options(e)
         )
         # Sections
+        self.clustering_settings_section = ClusteringSettingsSection(self)
         self.select_files_section = SelectFilesSection(self)
         self.delimiters_section = DelimiterSection(self)
         self.signal_cutting_section =SignalCuttingSection(self)
@@ -35,6 +37,7 @@ class ClusteringPageContent(AbstractMainContent):
         # Controls
         self.controls = [
             self.select_files_section,
+            self.clustering_settings_section,
             self.use_delimiters_checkbox,
             self.delimiters_section,
             self.use_signals_cutting_checkbox,
