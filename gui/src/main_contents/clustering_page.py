@@ -3,6 +3,7 @@ import flet as ft
 from .clustering_sections.file_picker import SelectFilesSection
 from .clustering_sections.delimiters_section import DelimiterSection
 from .clustering_sections.interfaces import AbstractFileObserver
+from .clustering_sections.signal_cutting import SignalCuttingSection
 
 class ClusteringPageContent(AbstractMainContent):
 
@@ -16,9 +17,16 @@ class ClusteringPageContent(AbstractMainContent):
             "Use delimitered file name for data labels", 
             value=False,
             on_change= lambda e: self.show_delimiters_options(e))
+        
+        self.use_signals_cutting_checkbox = ft.Checkbox(
+            "Delete noisy signal from start and end",
+            value=False,
+            on_change= lambda e: self.show_signal_cutting_options(e)
+        )
         # Sections
         self.select_files_section = SelectFilesSection(self)
         self.delimiters_section = DelimiterSection(self)
+        self.signal_cutting_section =SignalCuttingSection(self)
 
         # Observers
         self.__file_observers = []
@@ -29,12 +37,19 @@ class ClusteringPageContent(AbstractMainContent):
             self.select_files_section,
             self.use_delimiters_checkbox,
             self.delimiters_section,
+            self.use_signals_cutting_checkbox,
+            self.signal_cutting_section
             ]
         self.delimiters_section.visible = False
+        self.signal_cutting_section.visible = False
 
     def show_delimiters_options(self, e: ft.ControlEvent):
         self.delimiters_section.visible = e.control.value
         self.delimiters_section.update()
+
+    def show_signal_cutting_options(self, e: ft.ControlEvent):
+        self.signal_cutting_section.visible = e.control.value
+        self.signal_cutting_section.update()
 
     def update_delimiter_label_test(self):
         if self.files:
