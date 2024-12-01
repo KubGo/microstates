@@ -7,8 +7,8 @@ class SelectFilesSection(AbstractSection):
         super().__init__(content_page)
         self.pick_files_dialog = ft.FilePicker(on_result=self.pick_files_results)
         self.content_page.page.overlay.append(self.pick_files_dialog)
-        self.selected_files = FileList()
-        self.observers = []
+        self.selected_files = FileList(self)
+        self.observers = [self.content_page]
         
         # Content of section
         self.controls = [
@@ -48,20 +48,22 @@ class SelectFilesSection(AbstractSection):
             self.selected_files.add_file(file[0], file[1])
         self.selected_files.update()
         self.files = self.selected_files.get_file_names()
-        self.update_files_observers()
+        self.file_update()
 
     def register_for_file_updates(self, *args):
         for observer in args:
             self.observers.append(observer)
 
-    def update_files_observers(self):
+    def file_update(self):
+        self.files = self.selected_files.get_file_names()
         for observer in self.observers:
-            observer.files_change()
+            observer.file_update()
 
 class FileList(ft.ListView):
 
-    def __init__(self):
+    def __init__(self, section: AbstractSection):
         super().__init__(height=90)
+        self.section = section
         self.controls = []
     
     def add_file(self, name: str, path: str):
@@ -73,6 +75,7 @@ class FileList(ft.ListView):
     def delete_file(self, file):
         self.controls.remove(file)
         self.update()
+        self.section.file_update()
 
     def get_file_names(self):
         return [file.name for file in self.controls]
