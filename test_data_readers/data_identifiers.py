@@ -5,11 +5,11 @@ class AbstractDataIdentifier(ABC):
         super().__init__()
 
     @abstractmethod
-    def get_id(self):
+    def get_id(self) -> str:
         pass
     
     @abstractmethod
-    def get_activity(self):
+    def get_activity(self) -> str:
         pass
 
 class FilePathDataIdentifier(AbstractDataIdentifier):
