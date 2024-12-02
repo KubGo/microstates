@@ -12,6 +12,7 @@ class ClusteringPageContent(AbstractMainContent):
         super().__init__(page)
         self.files = []
         self.files_paths = {}
+        self.expand=True
 
         self.use_delimiters = False
         self.use_delimiters_checkbox = ft.Checkbox(
@@ -34,14 +35,30 @@ class ClusteringPageContent(AbstractMainContent):
         self.__file_observers = []
         self.register_for_file_update(self.delimiters_section)
 
+        # Clustering button
+        self.clustering_btn = ft.FilledButton(
+            text="Cluster micostates",
+        )
+
         # Controls
         self.controls = [
             self.select_files_section,
+            ft.Divider(height=1, color=ft.colors.BLACK),
             self.clustering_settings_section,
+            ft.Divider(height=1, color=ft.colors.BLACK, thickness=2),
             self.use_delimiters_checkbox,
             self.delimiters_section,
+            ft.Divider(height=1, color=ft.colors.BLACK),
             self.use_signals_cutting_checkbox,
-            self.signal_cutting_section
+            self.signal_cutting_section,
+            ft.Divider(height=1, color=ft.colors.BLACK),
+            ft.Row(
+                controls=[
+                    self.clustering_btn
+                ],
+                alignment=ft.MainAxisAlignment.CENTER,
+                expand=False
+            )
             ]
         self.delimiters_section.visible = False
         self.signal_cutting_section.visible = False
