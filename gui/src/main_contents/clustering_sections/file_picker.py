@@ -8,6 +8,11 @@ class SelectFilesSection(AbstractSection):
         self.pick_files_dialog = ft.FilePicker(on_result=self.pick_files_results)
         self.content_page.page.overlay.append(self.pick_files_dialog)
         self.selected_files = FileList(self)
+        self.frequency_entry = ft.TextField(
+            label="Signal frequency",
+            value=250,
+            hint_text="e.g. 250",
+            on_change= lambda e: check_if_all_numeric(e))
         self.observers = [self.content_page]
         
         # Content of section
@@ -31,11 +36,7 @@ class SelectFilesSection(AbstractSection):
                 bgcolor=ft.colors.WHITE,
                 border_radius=ft.border_radius.all,
             ),
-        ft.TextField(
-            label="Signal frequency",
-            value=250,
-            hint_text="e.g. 250",
-            on_change= lambda e: check_if_all_numeric(e)),
+            self.frequency_entry,
         ]
                  
     def pick_files_results(self, e: ft.FilePickerResultEvent):
