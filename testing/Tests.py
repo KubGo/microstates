@@ -23,7 +23,6 @@ class Test:
         data = self.test_data['data']
             
         # Get paths and model data
-        name = self.model.name
         method = self.model.method
         method_path = os.path.join(results_path, method)
         
@@ -32,7 +31,6 @@ class Test:
                                     clustering=True, 
                                     interpolMicrostates=interpolateMicrostates)
         results_whole_data.generate_results_report(method_path,
-                                                   name,
                                                    method,
                                                    testDescription)
         
@@ -49,7 +47,6 @@ class Test:
         
         # Save results
         results_listening.generate_results_report(method_path,
-                                                name,
                                                 method,
                                                 testDescription,
                                                 subfolder="listening")
@@ -59,7 +56,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_imagining.generate_results_report(method_path, 
-                                                  name,
                                                   method,
                                                   testDescription,
                                                   subfolder="imagining")
@@ -76,7 +72,6 @@ class Test:
         data = self.test_data['data']
             
         # Get paths and model data
-        name = self.model.name
         method = self.model.method
         method_path = os.path.join(results_path, method)
         
@@ -90,7 +85,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_listening.generate_results_report(method_path,
-                                                name,
                                                 method,
                                                 testDescription,
                                                 subfolder="listening")
@@ -100,7 +94,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_imagining.generate_results_report(method_path, 
-                                                  name,
                                                   method,
                                                   testDescription,
                                                   subfolder="imagining")

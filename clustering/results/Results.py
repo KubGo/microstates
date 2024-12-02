@@ -105,8 +105,7 @@ class Results:
     activity = None
     stats = None
 
-    def __init__(self, name: str, method: str):
-        self.name = name
+    def __init__(self,  method: str):
         self.method = method
 
     def save_results(self, path):
@@ -284,14 +283,12 @@ class Results:
         else:
             self.p_markov_test_2 = p
 
-    def generate_results_report(self, destination_path, name, method, activity, subfolder=None, xyz_file_path=""):
+    def generate_results_report(self, destination_path, method, activity, subfolder=None, xyz_file_path=""):
         """
         Generate html report of EEG microstates analysis
         Args:
             destination_path: String,
                 Path to save files
-            name: String,
-                Name of the analysis subject
             method: String,
                 Method to perform analysis
                 ['kmeans', 'kmedoids', 'aahc', 'pca', 'ica', 'dbscan', 'brich']
@@ -347,7 +344,6 @@ class Results:
             "path_to_gif": os.path.abspath(path_to_gif) if path_to_gif else None,
             "path_to_transition_matrix": os.path.abspath(path_to_transition_matrix),
             "method": method,
-            "name": name,
             "activity": activity,
             "n_samples": self.n_data_points,
             "n_channels": self.n_channels,
@@ -369,7 +365,6 @@ class Results:
         }
         params_chain = {
             "method": method,
-            "name": name,
             "activity": activity,
             "microstate_times": microstate_times,
             "stats": stats,
@@ -415,14 +410,12 @@ class Results:
         plt.clf()
 
 
-def results_factory(filename=None, name=None, method=None):
+def results_factory(filename=None, method=None):
     """
     Create new empty result from name and method or load from filename
     Args:
         filename: String,
             Path to saved results as .pickle
-        name: String,
-            name of new model
         method: String,
             Method of new model
     Returns:
@@ -434,10 +427,10 @@ def results_factory(filename=None, name=None, method=None):
             if not isinstance(results, Results):
                 raise TypeError(f"Unpickled object is not of type {Results}")
             return results
-    if not name or not method:
-        raise SyntaxError("There is a need for 2 keyword arguments: name and method\n"
+    if not method:
+        raise SyntaxError("There is a need for keyword argument: method\n"
                           "or give a path for pickled results")
-    return Results(name, method)
+    return Results(method)
 
 
 def load_results(filename):
@@ -475,7 +468,6 @@ def save_results_to_df(path_to_pickle, activity=' ', imagining=' '):
         raise FileNotFoundError("There is not such a pickle file")
     result = load_results(path_to_pickle)
     data = {
-        "name": result.name,
         "activity": activity,
         "imagining": imagining,
         "probability_A": result.empirical_p[0],

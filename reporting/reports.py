@@ -306,7 +306,6 @@ def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_st
         time_occurences.append(time_occurence)
     # Get all parameters
     params = {
-        "name": results[0].name,
         "activity": results[0].activity,
         "method": results[0].method,
         "n_samples": [r.n_data_points for r in results],

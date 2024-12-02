@@ -24,14 +24,13 @@ class AbstractModel(ABC):
     """
     results = None
 
-    def __init__(self, name=None, method=None, activity=None, filename=None, n_maps=4, f_sampling=250):
-        self.name = name
+    def __init__(self, method=None, activity=None, filename=None, n_maps=4, f_sampling=250):
         self.method = method
         self.activity = activity
         self.filename = filename
         self.n_maps = n_maps
         self.f_sampling = f_sampling
-        self.results = results_factory(filename, name, method)
+        self.results = results_factory(filename, method)
         self.results.fs = f_sampling
 
     @abstractmethod
