@@ -11,6 +11,7 @@ from sklearn.decomposition import PCA
 from clustering.models.markovTests import MarkovTest
 from clustering.results import results_factory
 from clustering.utilities import entropy
+from clustering.results import Results
 
 CAP_XYZ_PATH = os.path.abspath('cap2.csv')
 
@@ -311,7 +312,7 @@ class AbstractModel(ABC):
         }
         self.results.gev["total"] = gev.sum()
 
-    def perform_analysis(self, data, clustering=True, alpha=0.01, interpolMicrostates=False):
+    def perform_analysis(self, data, clustering=True, alpha=0.01, interpolMicrostates=False) -> Results:
         """
         Performs whole analysis of data
         Args:
