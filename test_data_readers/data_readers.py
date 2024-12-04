@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
-from data_identifiers import AbstractDataIdentifier
-from data_read_strategies import AbstractDataReadStrategy
-from data_models import Data
+from . data_identifiers import AbstractDataIdentifier
+from . data_read_strategies import AbstractDataReadStrategy
+from . data_models import Data
 from pathlib import Path
 
 class AbstractDataReader(ABC):
@@ -34,7 +34,7 @@ class FileDataReader(AbstractDataReader):
 
     def add_data(self, path):
         signal = self.data_read_strategy.get_data(path)
-        file_name = Path(path).stem()
+        file_name = Path(path).stem
         id = self.data_identifier.get_id(file_name)
         activity = self.data_identifier.get_activity(file_name)
         self.data_list.append(
@@ -46,11 +46,12 @@ class FileDataReader(AbstractDataReader):
         )
         self.max_position += 1
 
-    def next(self):
+    def next(self) -> Data:
         data = self.data_list[self.current_position]
         self.current_position += 1
+        return data
         
-    def has_more(self):
+    def has_more(self) -> bool:
         if self.current_position == self.max_position:
             self.current_position = 0
             return False

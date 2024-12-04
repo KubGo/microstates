@@ -17,7 +17,7 @@ class FilePathDataIdentifier(AbstractDataIdentifier):
         super().__init__()
         
     def get_id(self, file_name: str):
-        return self.file_name
+        return file_name
     
     def get_activity(self, file_name: str):
         return "Not specified"
@@ -30,7 +30,7 @@ class DelimiteredDataIdentifier(AbstractDataIdentifier):
         self.activity_position = activity_position
 
     def get_id(self, file_name: str):
-        return self.file_name.split(self.delimiter)[self.id_position]
+        return file_name.split(self.delimiter)[self.id_position]
     
     def get_activity(self, file_name: str):
-        return self.file_name.split(self.delimiter)[self.activity_position]
+        return file_name.split(self.delimiter)[self.activity_position]

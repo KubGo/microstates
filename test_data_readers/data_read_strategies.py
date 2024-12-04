@@ -1,5 +1,5 @@
 from abc import ABC, abstractmethod
-from data_identifiers import AbstractDataIdentifier
+from . data_identifiers import AbstractDataIdentifier
 import pandas as pd
 import numpy.typing as npt
 
@@ -7,7 +7,6 @@ class AbstractDataReadStrategy(ABC):
 
     def __init__(self, frequency: int):
         self.frequency = frequency
-        self.data = self.get_data()
 
     @abstractmethod
     def get_data(self, file_path: str) -> npt.ArrayLike:
