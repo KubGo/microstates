@@ -3,33 +3,30 @@ from data_identifiers import AbstractDataIdentifier
 import pandas as pd
 import numpy.typing as npt
 
-class AbstractData(ABC):
+class AbstractDataReadStrategy(ABC):
 
-    def __init__(self, file_path: str, frequency: int, data_identifier: AbstractDataIdentifier):
-        self.file_path = file_path
-        self.id = data_identifier.get_id()
-        self.activity = data_identifier.get_activity()
+    def __init__(self, frequency: int):
         self.frequency = frequency
         self.data = self.get_data()
 
     @abstractmethod
-    def get_data(self, file_path) -> npt.ArrayLike:
+    def get_data(self, file_path: str) -> npt.ArrayLike:
         pass
 
 
-class CleanData(AbstractData):
+class CleanDataReadStrategy(AbstractDataReadStrategy):
     
-    def __init__(self, file_path, frequency, data_identifier):
-        super().__init__(file_path, frequency, data_identifier)
+    def __init__(self, frequency):
+        super().__init__(frequency)
 
     def get_data(self, file_path):
         return pd.read_csv(file_path, index_col=0).to_numpy()
     
-class DirtyData(AbstractData):
-    def __init__(self, file_path, frequency, data_identifier, start_time: float, end_time: float):
+class DeleteStartEndDataStrategy(AbstractDataReadStrategy):
+    def __init__(self, frequency, start_time: float, end_time: float):
         self.start_time = start_time
         self.end_time = end_time
-        super().__init__(file_path, frequency, data_identifier)
+        super().__init__(frequency)
 
     def get_data(self, file_path):
         data = pd.read_csv(file_path, index_col=0)
