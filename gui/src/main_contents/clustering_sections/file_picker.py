@@ -80,6 +80,9 @@ class FileList(ft.ListView):
 
     def get_file_names(self):
         return [file.name for file in self.controls]
+    
+    def get_file_paths(self):
+        return [file.path for file in self.controls]
 
 class FileInterface(ft.Row):
 

@@ -38,7 +38,9 @@ class ClusteringPageContent(AbstractMainContent):
         # Clustering button
         self.clustering_btn = ft.FilledButton(
             text="Cluster micostates",
+            on_click=lambda e: self.cluster(e)
         )
+        self.clustering_done_text = ft.Text("", visible=False)
 
         # Controls
         self.controls = [
@@ -58,7 +60,9 @@ class ClusteringPageContent(AbstractMainContent):
                 ],
                 alignment=ft.MainAxisAlignment.CENTER,
                 expand=False
-            )
+            ),
+            self.clustering_done_text
+
             ]
         self.delimiters_section.visible = False
         self.signal_cutting_section.visible = False
@@ -86,3 +90,8 @@ class ClusteringPageContent(AbstractMainContent):
         for observer in self.__file_observers:
             observer.file_update(self.files)
 
+    def update_controller(self, controller):
+        self.controller = controller
+
+    def cluster(self, e):
+        self.controller.cluster()

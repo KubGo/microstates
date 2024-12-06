@@ -9,7 +9,7 @@ from math import log2
 from scipy.stats import chi2
 from sklearn.decomposition import PCA
 from clustering.models.markovTests import MarkovTest
-from clustering.results import results_factory
+from clustering.results import results_factory, Results
 from clustering.utilities import entropy
 from clustering.results import Results
 
@@ -31,7 +31,7 @@ class AbstractModel(ABC):
         self.filename = filename
         self.n_maps = n_maps
         self.f_sampling = f_sampling
-        self.results = results_factory(filename, method)
+        self.results = Results(method)
         self.results.fs = f_sampling
 
     @abstractmethod
