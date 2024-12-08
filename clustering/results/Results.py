@@ -415,6 +415,16 @@ class Results:
         plt.savefig(destination_path)
         plt.clf()
 
+    def get_microstates_figures(self):
+        cm = mpl.colormaps['seismic']
+        figures = []
+        for i, microstate in enumerate(self.cluster_centers):
+            fig, ax = plt.subplots()
+            ax.imshow(eeg_to_map(microstate), cmap=cm, origin='lower')
+            plt.axis('off')
+            figures.append(fig)
+        return figures
+
 
 def results_factory(filename=None, method=None):
     """
