@@ -5,7 +5,8 @@ from . data_models import Data
 from pathlib import Path
 
 class AbstractDataReader(ABC):
-
+    """Inteface for reading data
+    """
     def __init__(self, 
                 data_read_strategy: AbstractDataReadStrategy,
                 data_identifier: AbstractDataIdentifier):
@@ -17,17 +18,36 @@ class AbstractDataReader(ABC):
 
     @abstractmethod
     def add_data(self, path: str):
+        """Adds data to the data reader
+
+        Args:
+            path (str): path to the data
+        """
         pass
 
     @abstractmethod
     def next(self) -> Data:
+        """Returns next data
+
+        Returns:
+            Data: Data class that describes the data and contains its signal
+        """
         pass
 
-    @abstractmethod
     def has_more(self) -> bool:
-        pass
+        """Checks if there is more data inside DataReader
+
+        Returns:
+            bool: True if there is more data, else False
+        """
+        if self.current_position == self.max_position:
+            self.current_position = 0
+            return False
+        return True
 
 class FileDataReader(AbstractDataReader):
+    """Reads data from files
+    """
 
     def __init__(self, data_read_strategy, data_identifier):
         super().__init__(data_read_strategy, data_identifier)
@@ -51,13 +71,10 @@ class FileDataReader(AbstractDataReader):
         self.current_position += 1
         return data
         
-    def has_more(self) -> bool:
-        if self.current_position == self.max_position:
-            self.current_position = 0
-            return False
-        return True
 
 class FolderDataReader(AbstractDataReader):
+    """Reads data from folder
+    """
     def __init__(self, data_read_strategy, data_identifier):
         super().__init__(data_read_strategy, data_identifier)
 
@@ -82,9 +99,4 @@ class FolderDataReader(AbstractDataReader):
         data = self.data_list[self.current_position]
         self.current_position += 1
         
-    def has_more(self):
-        if self.current_position == self.max_position:
-            self.current_position = 0
-            return False
-        return True
                 

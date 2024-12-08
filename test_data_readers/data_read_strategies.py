@@ -4,16 +4,28 @@ import pandas as pd
 import numpy.typing as npt
 
 class AbstractDataReadStrategy(ABC):
+    """Interface for reading data strategies
+    """
 
     def __init__(self, frequency: int):
         self.frequency = frequency
 
     @abstractmethod
     def get_data(self, file_path: str) -> npt.ArrayLike:
+        """Gets EEG signal from file
+
+        Args:
+            file_path (str): Path to a file
+
+        Returns:
+            npt.ArrayLike: Signal in numpy array format
+        """
         pass
 
 
 class CleanDataReadStrategy(AbstractDataReadStrategy):
+    """Reads clean data, that doesn't need any operations on it
+    """
     
     def __init__(self, frequency):
         super().__init__(frequency)
@@ -22,6 +34,9 @@ class CleanDataReadStrategy(AbstractDataReadStrategy):
         return pd.read_csv(file_path, index_col=0).to_numpy()
     
 class DeleteStartEndDataStrategy(AbstractDataReadStrategy):
+    """Delets given time from start and end of the signal
+    """
+
     def __init__(self, frequency, start_time: float, end_time: float):
         self.start_time = start_time
         self.end_time = end_time
