@@ -27,12 +27,15 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         super().__init__(view)
 
     def cluster(self):
+        self.view.clustering_done_text.visible = False
+        self.view.clustering_done_text.update()
         model = self.get_clustering_model()
         data_reader = self.get_data_reader(model)
 
         test = WholeDataTest(
             model=model,
-            data_reader=data_reader
+            data_reader=data_reader,
+            interpol_microstates=self.view.clustering_settings_section.use_interpolation.value
         )
 
         test.run("./prototyping/guitest")
@@ -53,11 +56,11 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         return model
     
     def get_data_identifier(self) -> AbstractDataIdentifier:
-        if self.view.use_delimiters:
+        if self.view.use_delimiters_checkbox.value:
             delimiters_settings = self.view.delimiters_section
             delimiter = delimiters_settings.delimiter_selector.value
-            id_index = int(delimiters_settings.id_index_entry.value)
-            activity_index = int(delimiters_settings.activity_index_entry.value)
+            id_index = int(delimiters_settings.id_index_entry.value) - 1
+            activity_index = int(delimiters_settings.activity_index_entry.value) - 1
             return DelimiteredDataIdentifier(
                 delimiter=delimiter,
                 id_position=id_index,
@@ -66,9 +69,9 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         return FilePathDataIdentifier()
     
     def get_data_read_strategy(self) -> AbstractDataReadStrategy:
+        frequency = self.view.select_files_section.frequency_entry.value
         if self.view.use_signals_cutting_checkbox.value:
             cutting_settings = self.view.signal_cutting_section
-            frequency = self.view.select_files_section.frequency_entry.value
             start_time = 0
             end_time = 0
             if cutting_settings.checkbox_start_signal.value:

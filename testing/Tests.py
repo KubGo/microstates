@@ -26,8 +26,8 @@ class AbstractTest(ABC):
         pass
 
 class WholeDataTest(AbstractTest):
-    def __init__(self, model, data_reader):
-        super().__init__(model, data_reader)
+    def __init__(self, model, data_reader, interpol_microstates):
+        super().__init__(model, data_reader, interpol_microstates=interpol_microstates)
 
     def run(self, results_folder):
         while self.data_reader.has_more():
@@ -39,6 +39,8 @@ class WholeDataTest(AbstractTest):
             )
             results_path = Path().joinpath(results_folder, data.id, results.method, data.activity) 
             results_path.mkdir(parents=True, exist_ok=True)
+
+            results.set_id_and_activity(data.id, data.activity)
 
             results.generate_results_report(
                 destination_path=results_path.absolute(),

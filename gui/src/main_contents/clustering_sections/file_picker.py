@@ -23,7 +23,7 @@ class SelectFilesSection(AbstractSection):
                 icon=ft.icons.UPLOAD_FILE,
                 on_click=lambda _: self.pick_files_dialog.pick_files(
                     allow_multiple=True,
-                    initial_directory='/home/kuba/Desktop/test/P01_chill.csv'
+                    initial_directory='/home/kuba/Desktop/reordering/data/all_data/P01/P01_Fitness_Activity_clean_signal.csv'
                 )
             ),
             ft.Container(

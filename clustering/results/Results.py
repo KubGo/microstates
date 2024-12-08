@@ -107,6 +107,12 @@ class Results:
 
     def __init__(self,  method: str):
         self.method = method
+        self.id= ''
+        self.activity = ''
+
+    def set_id_and_activity(self, id:str, activity:str):
+        self.id = id
+        self.activity = activity
 
     def save_results(self, path):
         """
