@@ -6,6 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import plotly.express as px
 import plotly.graph_objects as go
+from .reporting_sections.transition_matrix_section import TransitionMatrixSection
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 COLORS = [ft.colors.RED, ft.colors.BLUE, ft.colors.GREEN, ft.colors.YELLOW,
@@ -21,7 +22,7 @@ class ResultsTab(ft.Tab):
         self.microstate_figures = self.results.get_microstates_figures()
         microstates_images = [ft.Column(
             [
-                MatplotlibChart(figure),
+                MatplotlibChart(figure, isolated=True),
                 ft.Text(f"{LABELS[i]}", size=16)
             ], expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         ) for i, figure in enumerate(self.microstate_figures)]
@@ -45,12 +46,17 @@ class ResultsTab(ft.Tab):
             sections_space=0,
             center_space_radius=0,
         )
+        plt.close('all')
+
+        self.transition_matrix_section = TransitionMatrixSection(self.results)
+        
         self.report_content = ft.Column(
             controls=[
                 self.obtained_microstates,
-                self.prob_pie_chart
+                self.prob_pie_chart,
+                self.transition_matrix_section
             ],
-            scroll=True
+            scroll=True,
         )
         
         self.content = ft.Container(
