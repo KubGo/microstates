@@ -21,8 +21,20 @@ class TransitionMatrixSection(AbstractReportingSection):
         fig = hm.get_figure()
         
         self.controls = [
-            MatplotlibChart(hm.get_figure(), expand=True, isolated=True)
+            ft.Text(
+                "Transition matrix",
+                size=36,
+                weight=ft.FontWeight.BOLD,
+                expand=True,
+            ),
+            ft.Divider(thickness=4),
+            ft.Row(
+                controls=[
+                    MatplotlibChart(hm.get_figure(),
+                                    expand=True,
+                                    isolated=True)
+                ]
+            ),
+            ft.Divider(thickness=4),
         ]
         plt.close('all')
-
-

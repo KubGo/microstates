@@ -19,7 +19,7 @@ class ProbabilitiesSection(AbstractReportingSection):
                     color=COLORS[i],
                     badge=self.badge(LABELS[i], 40), 
                     badge_position=0.98,
-                    radius=100
+                    radius=100,
                 )
                 for i, prob in enumerate(self.results.empirical_p)
             ],
@@ -28,7 +28,19 @@ class ProbabilitiesSection(AbstractReportingSection):
             expand=True
         )
         self.controls = [
-            self.prob_pie_chart
+            ft.Text(
+                "Probabilities of microstates",
+                size=36,
+                weight=ft.FontWeight.BOLD,
+                expand=True
+            ),
+            ft.Divider(thickness=4),
+            ft.Row(
+                controls=[
+                    self.prob_pie_chart
+                ]
+            ),
+            ft.Divider(thickness=4),
         ]
 
 

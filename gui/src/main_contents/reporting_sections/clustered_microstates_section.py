@@ -8,7 +8,6 @@ LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 class ClusteredMicrostatesSeciton(AbstractReportingSection):
     def __init__(self, results):
         super().__init__(results)
-        self.spacing = 30
 
         self.microstate_figures = self.results.get_microstates_figures()
         microstates_images = [ft.Column(
@@ -18,5 +17,16 @@ class ClusteredMicrostatesSeciton(AbstractReportingSection):
             ], expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER,
         ) for i, figure in enumerate(self.microstate_figures)]
 
-        self.controls = microstates_images
+        self.controls = [
+                ft.Text("Obtained microstates",
+                    size=36,
+                    weight=ft.FontWeight.BOLD,
+                    expand=True,
+                    ),
+            ft.Divider(thickness=4),
+            ft.Row(controls=microstates_images,
+            spacing = 30),
+            ft.Divider(thickness=4),
+
+        ]
         plt.close('all')
