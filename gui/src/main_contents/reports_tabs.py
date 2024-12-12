@@ -10,6 +10,7 @@ from .reporting_sections.transition_matrix_section import TransitionMatrixSectio
 from .reporting_sections.clustered_microstates_section import ClusteredMicrostatesSeciton
 from .reporting_sections.probabilities_section import ProbabilitiesSection
 from .reporting_sections.entropies_section import EntropiesSection
+from .reporting_sections.statictical_test_results_section import StaticticalTestResultsSection
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
@@ -28,12 +29,15 @@ class ResultsTab(ft.Tab):
         
         self.entropies_section = EntropiesSection(self.results)
 
+        self.statistical_tests_results = StaticticalTestResultsSection(self.results)
+
         self.report_content = ft.Column(
             controls=[
                 self.obtained_microstates,
                 self.prob_pie_chart,
                 self.transition_matrix_section,
-                self.entropies_section
+                self.entropies_section,
+                self.statistical_tests_results,
             ],
             scroll=True,
         )
