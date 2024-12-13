@@ -3,12 +3,12 @@ from flet import (
     FletApp,
     View
 )
-from main_contents.home_page import HomePageContent
-from main_contents.clustering_page import ClusteringPageContent
-from main_contents.reports_page import ReportsPage
-from app_layout import AppLayout
-from sidebar import SideBar, SideBarObserver
-from main_contents.controllers.clustering_controllers import WholeSignalClusteringControler
+from gui.main_contents.home_page import HomePageContent
+from gui.main_contents.clustering_page import ClusteringPageContent
+from gui.main_contents.reports_page import ReportsPage
+from gui.app_layout import AppLayout
+from gui.sidebar import SideBar, SideBarObserver
+from gui.main_contents.controllers.clustering_controllers import WholeSignalClusteringControler
 
 class MicrostatesApp(SideBarObserver):
     

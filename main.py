@@ -4,8 +4,8 @@ from flet import (
     Theme,
 )
 
-from app_layout import AppLayout
-from microstates_app import MicrostatesApp
+from gui.app_layout import AppLayout
+from gui.microstates_app import MicrostatesApp
 
 def main(page: Page):
     page.theme = Theme(

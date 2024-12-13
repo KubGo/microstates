@@ -9,8 +9,8 @@ from flet import (
     Container
 )
 
-from sidebar import SideBar
-from main_contents.interfaces import AbstractMainContent
+from .sidebar import SideBar
+from .main_contents.interfaces import AbstractMainContent
 
 class AppLayout(Row):
     def __init__(
@@ -54,7 +54,6 @@ class AppLayout(Row):
     @active_view.setter
     def active_view(self, view):
         self._active_view = view
-        self.updateMainContent()
         
     def toggle_nav_rail(self, e):
         self.sidebar.visible = not self.sidebar.visible

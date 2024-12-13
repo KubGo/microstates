@@ -1,12 +1,12 @@
 from abc import ABC, abstractmethod
-from controllers.interfaces import AbstractController
+from gui.controllers.interfaces import AbstractController
 from clustering.models import model_factory
 from clustering.models.abstractModel import AbstractModel
 from test_data_readers.data_readers import AbstractDataReader, FileDataReader
 from test_data_readers.data_identifiers import AbstractDataIdentifier, DelimiteredDataIdentifier, FilePathDataIdentifier
 from test_data_readers.data_read_strategies import AbstractDataReadStrategy, CleanDataReadStrategy, DeleteStartEndDataStrategy
 from testing import WholeDataTest
-from main_contents.clustering_page import ClusteringPageContent
+from gui.main_contents.clustering_page import ClusteringPageContent
 
 class AbstractClusteringControler(AbstractController):
 
