@@ -20,6 +20,7 @@ class AbstractTest(ABC):
         self.model = model
         self.data_reader = data_reader
         self.interpol_microstates = interpol_microstates
+        self.results_paths = []
 
     @abstractmethod
     def run(self, results_folder: str):
@@ -47,6 +48,8 @@ class WholeDataTest(AbstractTest):
                 method=results.method,
                 activity=data.activity
             )
+            self.results_paths.append(results_path)
+            
 
 class Test:
     def __init__(self, model: AbstractModel, test_data: dict, break_time: float):

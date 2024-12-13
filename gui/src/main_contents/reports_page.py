@@ -57,3 +57,8 @@ class ReportsPage(AbstractMainContent):
             new_tab_index = self.reports_tabs.tabs.index(report_tab)
             self.reports_tabs.selected_index = new_tab_index
             self.reports_tabs.update()
+
+
+class SessionResults(ft.ListView):
+    def __init__(self, ):
+        super().__init__()

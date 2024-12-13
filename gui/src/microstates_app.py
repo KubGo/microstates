@@ -20,6 +20,7 @@ class MicrostatesApp(SideBarObserver):
         self.home_page = HomePageContent(self.page)
         self.clustering_page = ClusteringPageContent(self.page)
         self.reporting_page = ReportsPage(self.page)
+
         # Controllers
         self.current_page_number = 0
         self.clustering_controller = WholeSignalClusteringControler(self.clustering_page)
