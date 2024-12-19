@@ -1,6 +1,7 @@
 from .interfaces import AbstractMainContent
 import flet as ft
 from .reports_tabs import ResultsTab
+from pathlib import Path
 
 class ReportsPage(AbstractMainContent):
     def __init__(self, page):
@@ -22,9 +23,11 @@ class ReportsPage(AbstractMainContent):
             animation_duration=400,
             expand=True,
         )
+        self.session_results = SessionResults()
 
         self.select_reports_section = ft.Row(
             [
+                self.session_results,
                 ft.ElevatedButton(
                     "Select results file",
                     icon=ft.icons.UPLOAD_FILE,
@@ -32,9 +35,12 @@ class ReportsPage(AbstractMainContent):
                         allow_multiple=False,
                         allowed_extensions=['pickle',],
                         initial_directory='/home/kuba/repositories/microstates/prototyping/guitest/P01/K-means/Fitness/results/08_12_24_model.pickle'
-                    )
+                    ),
                 )
-            ]
+            ], 
+            alignment= ft.MainAxisAlignment.START,
+            spacing=20,
+
         )
         self.top_text = ft.Text("Reports", 
                                 text_align=ft.MainAxisAlignment.CENTER,
@@ -53,12 +59,30 @@ class ReportsPage(AbstractMainContent):
             report_tab = ResultsTab(file_path)
             if self.placeholder_tab in self.reports_tabs.tabs:
                 self.reports_tabs.tabs.remove(self.placeholder_tab)
-            self.reports_tabs.tabs.append(report_tab)
-            new_tab_index = self.reports_tabs.tabs.index(report_tab)
-            self.reports_tabs.selected_index = new_tab_index
-            self.reports_tabs.update()
+            self.add_new_report(report_tab)
+
+    def add_new_report(self, file_path: str):
+        tab = ResultsTab(file_path)
+        self.reports_tabs.tabs.append(tab)
+        new_tab_index = self.reports_tabs.tabs.index(tab)
+        self.reports_tabs.selected_index = new_tab_index
+        self.reports_tabs.update()
 
 
 class SessionResults(ft.ListView):
-    def __init__(self, ):
+    def __init__(self):
         super().__init__()
+        self.place_holder = ft.Text("No results in current session.")
+        self.controls = [self.place_holder]
+        self.width= 400
+
+    def add_result(self, path: str):
+        path = Path(path)
+        name = path.stem
+        btn = ft.FilledButton(text=name)
+        if self.place_holder is not None:
+            self.controls = []
+            self.place_holder = None
+        self.controls.append(btn)
+        self.update()
+

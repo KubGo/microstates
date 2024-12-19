@@ -2,6 +2,7 @@ import flet as ft
 from gui.main_contents.interfaces import AbstractMainContent
 from gui.main_contents.clustering_sections.interfaces import AbstractSection
 from .utils import check_if_all_numeric
+
 class SelectFilesSection(AbstractSection):
     def __init__(self, content_page: AbstractMainContent):
         super().__init__(content_page)

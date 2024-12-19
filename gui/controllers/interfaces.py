@@ -5,5 +5,6 @@ class AbstractController(ABC):
 
     def __init__(self, content: AbstractMainContent):
         super().__init__()
+        self.current_session_results = None
 
     

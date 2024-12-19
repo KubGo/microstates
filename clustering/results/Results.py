@@ -126,6 +126,7 @@ class Results:
         destination_path = os.path.join(path, datetime.datetime.now().strftime("%d_%m_%y") + "_model.pickle")
         with open(destination_path, "wb") as file:
             pickle.dump(self, file, protocol=pickle.HIGHEST_PROTOCOL)
+        return destination_path
 
     def save_alpha_wave(self, path):
         """
@@ -342,7 +343,7 @@ class Results:
         microstate_times = get_microstates_time_chain(self.clusters_chain, self.fs)
         stats = get_microstate_time_stats(microstate_times)
         self.stats = stats
-        self.save_results(results_path)
+        pickle_path = self.save_results(results_path)
         params_index = {
             "path_for_alpha_wave": os.path.abspath(path_for_alpha_wave),
             "path_to_microstates_image":
@@ -380,6 +381,7 @@ class Results:
         # Prototype saving report
         save_report(results_path, params_index, params_chain)
         print("Report saved")
+        return pickle_path
 
     def draw_signal_and_peaks(self, path):
         GFP = self.alpha_wave[:1500]

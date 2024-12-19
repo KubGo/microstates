@@ -8,6 +8,7 @@ from test_data_readers.data_readers import AbstractDataReader
 from test_data_readers.data_models import Data
 from testing.utilities import split_data_at_time
 from reporting import generate_comparison_report
+from gui.results_observers import CurrentSessionResults
 
 
 class AbstractTest(ABC):
@@ -15,21 +16,21 @@ class AbstractTest(ABC):
     def __init__(self, 
                 model: AbstractModel,
                 data_reader: AbstractDataReader,
-                interpol_microstates: bool=True):
+                interpol_microstates: bool,
+                current_session_results: CurrentSessionResults):
         super().__init__()
         self.model = model
         self.data_reader = data_reader
         self.interpol_microstates = interpol_microstates
-        self.results_paths = []
+        self.current_session_results = current_session_results
 
     @abstractmethod
     def run(self, results_folder: str):
         pass
 
 class WholeDataTest(AbstractTest):
-    def __init__(self, model, data_reader, interpol_microstates):
-        super().__init__(model, data_reader, interpol_microstates=interpol_microstates)
-
+    def __init__(self, model, data_reader, interpol_microstates, current_session_results):
+        super().__init__(model, data_reader, interpol_microstates, current_session_results)
     def run(self, results_folder):
         while self.data_reader.has_more():
             data = self.data_reader.next()
@@ -43,12 +44,13 @@ class WholeDataTest(AbstractTest):
 
             results.set_id_and_activity(data.id, data.activity)
 
-            results.generate_results_report(
+            pickle_path = results.generate_results_report(
                 destination_path=results_path.absolute(),
                 method=results.method,
                 activity=data.activity
             )
-            self.results_paths.append(results_path)
+            self.current_session_results.results_paths.append(pickle_path)
+            self.current_session_results.update()
             
 
 class Test:

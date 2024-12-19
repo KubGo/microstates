@@ -7,13 +7,15 @@ from test_data_readers.data_identifiers import AbstractDataIdentifier, Delimiter
 from test_data_readers.data_read_strategies import AbstractDataReadStrategy, CleanDataReadStrategy, DeleteStartEndDataStrategy
 from testing import WholeDataTest
 from gui.main_contents.clustering_page import ClusteringPageContent
+from gui.results_observers import CurrentSessionResults, AbstractResultsObserver
 
-class AbstractClusteringControler(AbstractController):
+class AbstractClusteringControler(AbstractController, AbstractResultsObserver):
 
     def __init__(self, view: ClusteringPageContent):
         super().__init__(view)
         self.view = view
         self.view.update_controller(self)
+
     @abstractmethod
     def cluster(self):
         pass
@@ -21,7 +23,7 @@ class AbstractClusteringControler(AbstractController):
     @abstractmethod
     def update_view(self):
         pass
-    
+
 class WholeSignalClusteringControler(AbstractClusteringControler):
     def __init__(self, view: ClusteringPageContent):
         super().__init__(view)
@@ -35,7 +37,8 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         test = WholeDataTest(
             model=model,
             data_reader=data_reader,
-            interpol_microstates=self.view.clustering_settings_section.use_interpolation.value
+            interpol_microstates=self.view.clustering_settings_section.use_interpolation.value,
+            current_session_results = self.current_session_results,
         )
 
         test.run("./prototyping/guitest")
@@ -45,6 +48,9 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         self.view.clustering_done_text.value = "Clustering done!"
         self.view.clustering_done_text.visible = True
         self.view.clustering_done_text.update()
+
+    def results_update(self):
+        print("Results update from clustering controller :)")
 
         
     def get_clustering_model(self) -> AbstractModel:
