@@ -44,12 +44,12 @@ class WholeDataTest(AbstractTest):
 
             results.set_id_and_activity(data.id, data.activity)
 
-            pickle_path = results.generate_results_report(
+            results.generate_results_report(
                 destination_path=results_path.absolute(),
                 method=results.method,
                 activity=data.activity
             )
-            self.current_session_results.results_paths.append(pickle_path)
+            self.current_session_results.add_new_current_session_result(results)
             self.current_session_results.update()
             
 

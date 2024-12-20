@@ -8,5 +8,5 @@ class ReportsController(AbstractController, AbstractResultsObserver):
          self.view = view
 
     def results_update(self):
-        new_path = self.current_session_results.results_paths[-1]
-        self.view.session_results.add_result(new_path)
+        results_info = self.current_session_results.results[-1]
+        self.view.session_results.add_result(results_info.results_name)

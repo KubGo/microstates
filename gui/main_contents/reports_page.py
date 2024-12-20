@@ -56,10 +56,9 @@ class ReportsPage(AbstractMainContent):
         if e.files:
             file_name = e.files[0].name
             file_path = e.files[0].path
-            report_tab = ResultsTab(file_path)
             if self.placeholder_tab in self.reports_tabs.tabs:
                 self.reports_tabs.tabs.remove(self.placeholder_tab)
-            self.add_new_report(report_tab)
+            self.add_new_report(file_path)
 
     def add_new_report(self, file_path: str):
         tab = ResultsTab(file_path)

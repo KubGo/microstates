@@ -105,10 +105,12 @@ class Results:
     activity = None
     stats = None
 
+
     def __init__(self,  method: str):
         self.method = method
         self.id= ''
         self.activity = ''
+        self.pickle_path = ''
 
     def set_id_and_activity(self, id:str, activity:str):
         self.id = id
@@ -381,7 +383,7 @@ class Results:
         # Prototype saving report
         save_report(results_path, params_index, params_chain)
         print("Report saved")
-        return pickle_path
+        self.pickle_path = pickle_path
 
     def draw_signal_and_peaks(self, path):
         GFP = self.alpha_wave[:1500]

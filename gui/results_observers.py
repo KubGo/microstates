@@ -1,10 +1,11 @@
 from abc import ABC, abstractmethod
 from gui.main_contents.reports_page import ReportsPage
 from gui.controllers.interfaces import AbstractController
+from clustering.results import Results
 
 class AbstractResultsObserver(ABC):
     def __init__(self):
-        pass
+        self.current_session_results: CurrentSessionResults = None
 
     @abstractmethod
     def results_update(self):
@@ -30,7 +31,7 @@ class ResultsUpdatesPublisher:
 
 class CurrentSessionResults:
     def __init__(self, controllers: list[AbstractController]):
-        self.results_paths = []
+        self.results: list[ResultsInfo] = []
         self.observers: list[AbstractResultsObserver] = []
         for controller in controllers:
             controller.current_session_results = self
@@ -43,3 +44,11 @@ class CurrentSessionResults:
     def update(self):
         for observer in self.observers:
             observer.results_update()
+
+    def add_new_current_session_result(self, results: Results):
+        self.results.append(ResultsInfo(results))
+
+class ResultsInfo:
+    def __init__(self, results: Results):
+        self.results_name = f"{results.id}-{results.activity}"
+        self.results_path = results.pickle_path
