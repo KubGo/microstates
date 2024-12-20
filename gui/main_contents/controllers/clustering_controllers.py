@@ -47,7 +47,6 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
     def update_view(self):
         self.view.clustering_done_text.value = "Clustering done!"
         self.view.clustering_done_text.visible = True
-        self.view.clustering_done_text.update()
 
     def results_update(self):
         print("Results update from clustering controller :)")

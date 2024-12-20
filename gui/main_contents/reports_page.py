@@ -83,5 +83,3 @@ class SessionResults(ft.ListView):
             self.controls = []
             self.place_holder = None
         self.controls.append(btn)
-        self.update()
-

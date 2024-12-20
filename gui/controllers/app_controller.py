@@ -8,6 +8,8 @@ from gui.results_observers import CurrentSessionResults
 class MicrostatesAppController(AbstractController):
     def __init__(self, content, clustering_controller:AbstractClusteringControler, reports_controller: ReportsController):
         super().__init__(content)
+        # Page at it refers to all contents that are displayed
+        self.page = content
         self.clustering_controller = clustering_controller
         self.reports_controller = reports_controller
         self.clustering_controller.current_session_results = self.current_session_results
@@ -15,6 +17,7 @@ class MicrostatesAppController(AbstractController):
 
         # Current sesion results updates publisher and observers
         self.current_session_results = CurrentSessionResults(
+            self.page,
             [
                 self.reports_controller,
                 self.clustering_controller
