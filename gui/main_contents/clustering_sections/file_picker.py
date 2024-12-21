@@ -35,7 +35,7 @@ class SelectFilesSection(AbstractSection):
                     ),
                 expand=True,
                 bgcolor=ft.colors.WHITE,
-                border_radius=ft.border_radius.all,
+                border_radius=ft.border_radius.all(5),
             ),
             self.frequency_entry,
         ]
