@@ -2,6 +2,7 @@ from .interfaces import AbstractMainContent
 import flet as ft
 from .reports_tabs import ResultsTab
 from pathlib import Path
+from gui.results_observers import ResultsInfo
 
 class ReportsPage(AbstractMainContent):
     def __init__(self, page):
@@ -23,7 +24,7 @@ class ReportsPage(AbstractMainContent):
             animation_duration=400,
             expand=True,
         )
-        self.session_results = SessionResults()
+        self.session_results = SessionResults(self)
 
         self.select_reports_section = ft.Row(
             [
@@ -56,12 +57,12 @@ class ReportsPage(AbstractMainContent):
         if e.files:
             file_name = e.files[0].name
             file_path = e.files[0].path
-            if self.placeholder_tab in self.reports_tabs.tabs:
-                self.reports_tabs.tabs.remove(self.placeholder_tab)
             self.add_new_report(file_path)
 
     def add_new_report(self, file_path: str):
         tab = ResultsTab(file_path)
+        if self.placeholder_tab in self.reports_tabs.tabs:
+            self.reports_tabs.tabs.remove(self.placeholder_tab)
         self.reports_tabs.tabs.append(tab)
         new_tab_index = self.reports_tabs.tabs.index(tab)
         self.reports_tabs.selected_index = new_tab_index
@@ -69,16 +70,18 @@ class ReportsPage(AbstractMainContent):
 
 
 class SessionResults(ft.ListView):
-    def __init__(self):
+    def __init__(self, reports_page: ReportsPage):
         super().__init__()
+        self.reports_page = reports_page
         self.place_holder = ft.Text("No results in current session.")
         self.controls = [self.place_holder]
         self.width= 400
 
-    def add_result(self, path: str):
-        path = Path(path)
-        name = path.stem
-        btn = ft.FilledButton(text=name)
+    def add_result(self, results: ResultsInfo):
+        btn = ft.FilledButton(text=results.results_name,
+                              on_click=lambda e : self.reports_page.add_new_report(
+                                  results.results_path
+                              ))
         if self.place_holder is not None:
             self.controls = []
             self.place_holder = None

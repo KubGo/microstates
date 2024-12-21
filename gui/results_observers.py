@@ -1,5 +1,4 @@
 from abc import ABC, abstractmethod
-from gui.main_contents.reports_page import ReportsPage
 from gui.controllers.interfaces import AbstractController
 from clustering.results import Results
 import flet as ft
@@ -12,12 +11,7 @@ class AbstractResultsObserver(ABC):
     def results_update(self):
         pass
 
-class CurrentSessionResultsObserver(AbstractResultsObserver):
-    def __init__(self, results_page: ReportsPage):
-        self.results_page = results_page
 
-    def results_update(self):
-        pass
 
 class ResultsUpdatesPublisher:
     def __init__(self):
