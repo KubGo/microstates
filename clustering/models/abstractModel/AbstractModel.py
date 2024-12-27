@@ -9,8 +9,9 @@ from math import log2
 from scipy.stats import chi2
 from sklearn.decomposition import PCA
 from clustering.models.markovTests import MarkovTest
-from clustering.results import results_factory
+from clustering.results import results_factory, Results
 from clustering.utilities import entropy
+from clustering.results import Results
 
 CAP_XYZ_PATH = os.path.abspath('cap2.csv')
 
@@ -24,14 +25,13 @@ class AbstractModel(ABC):
     """
     results = None
 
-    def __init__(self, name=None, method=None, activity=None, filename=None, n_maps=4, f_sampling=250):
-        self.name = name
+    def __init__(self, method=None, activity=None, filename=None, n_maps=4, f_sampling=250):
         self.method = method
         self.activity = activity
         self.filename = filename
         self.n_maps = n_maps
         self.f_sampling = f_sampling
-        self.results = results_factory(filename, name, method)
+        self.results = Results(method)
         self.results.fs = f_sampling
 
     @abstractmethod
@@ -312,7 +312,7 @@ class AbstractModel(ABC):
         }
         self.results.gev["total"] = gev.sum()
 
-    def perform_analysis(self, data, clustering=True, alpha=0.01, interpolMicrostates=False):
+    def perform_analysis(self, data, clustering=True, alpha=0.01, interpolMicrostates=False) -> Results:
         """
         Performs whole analysis of data
         Args:

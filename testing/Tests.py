@@ -1,12 +1,57 @@
 import os
 import matplotlib.pyplot as plt
 
-
+from pathlib import Path
+from abc import ABC, abstractmethod
 from clustering.models.abstractModel import AbstractModel
+from test_data_readers.data_readers import AbstractDataReader
+from test_data_readers.data_models import Data
 from testing.utilities import split_data_at_time
 from reporting import generate_comparison_report
+from gui.results_observers import CurrentSessionResults
 
 
+class AbstractTest(ABC):
+
+    def __init__(self, 
+                model: AbstractModel,
+                data_reader: AbstractDataReader,
+                interpol_microstates: bool,
+                current_session_results: CurrentSessionResults):
+        super().__init__()
+        self.model = model
+        self.data_reader = data_reader
+        self.interpol_microstates = interpol_microstates
+        self.current_session_results = current_session_results
+
+    @abstractmethod
+    def run(self, results_folder: str):
+        pass
+
+class WholeDataTest(AbstractTest):
+    def __init__(self, model, data_reader, interpol_microstates, current_session_results):
+        super().__init__(model, data_reader, interpol_microstates, current_session_results)
+    def run(self, results_folder):
+        while self.data_reader.has_more():
+            data = self.data_reader.next()
+            results = self.model.perform_analysis(
+                data=data.data,
+                clustering=True,
+                interpolMicrostates=self.interpol_microstates
+            )
+            results_path = Path().joinpath(results_folder, data.id, results.method, data.activity) 
+            results_path.mkdir(parents=True, exist_ok=True)
+
+            results.set_id_and_activity(data.id, data.activity)
+
+            results.generate_results_report(
+                destination_path=results_path.absolute(),
+                method=results.method,
+                activity=data.activity
+            )
+            self.current_session_results.add_new_current_session_result(results)
+            self.current_session_results.update()
+            
 
 class Test:
     def __init__(self, model: AbstractModel, test_data: dict, break_time: float):
@@ -23,7 +68,6 @@ class Test:
         data = self.test_data['data']
             
         # Get paths and model data
-        name = self.model.name
         method = self.model.method
         method_path = os.path.join(results_path, method)
         
@@ -32,7 +76,6 @@ class Test:
                                     clustering=True, 
                                     interpolMicrostates=interpolateMicrostates)
         results_whole_data.generate_results_report(method_path,
-                                                   name,
                                                    method,
                                                    testDescription)
         
@@ -49,7 +92,6 @@ class Test:
         
         # Save results
         results_listening.generate_results_report(method_path,
-                                                name,
                                                 method,
                                                 testDescription,
                                                 subfolder="listening")
@@ -59,7 +101,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_imagining.generate_results_report(method_path, 
-                                                  name,
                                                   method,
                                                   testDescription,
                                                   subfolder="imagining")
@@ -76,7 +117,6 @@ class Test:
         data = self.test_data['data']
             
         # Get paths and model data
-        name = self.model.name
         method = self.model.method
         method_path = os.path.join(results_path, method)
         
@@ -90,7 +130,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_listening.generate_results_report(method_path,
-                                                name,
                                                 method,
                                                 testDescription,
                                                 subfolder="listening")
@@ -100,7 +139,6 @@ class Test:
                                     interpolMicrostates=interpolateMicrostates)
         
         results_imagining.generate_results_report(method_path, 
-                                                  name,
                                                   method,
                                                   testDescription,
                                                   subfolder="imagining")

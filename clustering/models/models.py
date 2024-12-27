@@ -1,5 +1,6 @@
 import os
 from clustering.utilities import load_model
+from clustering.models.abstractModel import AbstractModel
 from . KMeans import KMeansModel
 from . KMedoids import KMedoidsModel
 from . AAHC import  AAHCModel
@@ -8,7 +9,7 @@ from . ICA import ICAModel
 from . DBScan import DBScanModel
 
 
-def model_factory(name, method: str, path=None, n_maps=4, f_sampling=250):
+def model_factory(method: str, path=None, n_maps=4, f_sampling=250) -> AbstractModel:
     if path is not None:
         if os.path.exists(path):
             files = os.listdir(path)
@@ -21,22 +22,22 @@ def model_factory(name, method: str, path=None, n_maps=4, f_sampling=250):
         raise FileNotFoundError("Model was not found")
 
     if method.lower().replace("-", "") == "kmeans":
-        model = KMeansModel(name, method)
+        model = KMeansModel(method)
         return model
     elif method.lower().replace("-", "") == "kmedoids":
-        model = KMedoidsModel(name, method)
+        model = KMedoidsModel(method)
         return model
     elif method.lower().replace("-", "") == "aahc":
-        model = AAHCModel(name, method)
+        model = AAHCModel(method)
         return model
     elif method.lower().replace("-", "") == "pca":
-        model = PCAModel(name, method)
+        model = PCAModel(method)
         return model
     elif method.lower().replace("-", "") == "ica":
-        model = ICAModel(name, method)
+        model = ICAModel(method)
         return model
     elif method.lower().replace("-", "") == "dbscan":
-        model = DBScanModel(name, method)
+        model = DBScanModel(method)
         return model
     else:
         raise NotImplementedError(f"Model {method} not found, only these models are available:\n"
