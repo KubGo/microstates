@@ -34,7 +34,7 @@ class GUITest(AbstractTest):
         while self.data_reader.has_more():
             data = self.data_reader.next()
             results = self.analysis_strategy.perform_analysis(
-                data=data.data
+                data=data
             )
             results_path = Path().joinpath(results_folder, data.id, results.method, data.activity) 
             results_path.mkdir(parents=True, exist_ok=True)
