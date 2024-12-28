@@ -2,12 +2,14 @@ from abc import ABC, abstractmethod
 from gui.controllers.interfaces import AbstractController
 from clustering.models import model_factory
 from clustering.models.abstractModel import AbstractModel
+from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy, WholeSignalAnalysisStrategy
 from test_data_readers.data_readers import AbstractDataReader, FileDataReader
 from test_data_readers.data_identifiers import AbstractDataIdentifier, DelimiteredDataIdentifier, FilePathDataIdentifier
 from test_data_readers.data_read_strategies import AbstractDataReadStrategy, CleanDataReadStrategy, DeleteStartEndDataStrategy
-from testing import WholeDataTest
+from testing import GUITest
 from gui.main_contents.clustering_page import ClusteringPageContent
 from gui.results_observers import CurrentSessionResults, AbstractResultsObserver
+
 
 class AbstractClusteringControler(AbstractController, AbstractResultsObserver):
 
@@ -24,7 +26,7 @@ class AbstractClusteringControler(AbstractController, AbstractResultsObserver):
     def update_view(self):
         pass
 
-class WholeSignalClusteringControler(AbstractClusteringControler):
+class ClusteringController(AbstractClusteringControler):
     def __init__(self, view: ClusteringPageContent):
         super().__init__(view)
 
@@ -34,15 +36,42 @@ class WholeSignalClusteringControler(AbstractClusteringControler):
         model = self.get_clustering_model()
         data_reader = self.get_data_reader(model)
 
-        test = WholeDataTest(
+        analysis_strategy = self.get_analysis_strategy(
             model=model,
+            alpha=0.01,
+            interpolMicrostates=self.view.clustering_settings_section.use_interpolation.value,
+        )
+        test = GUITest(
+            analysis_strategy=analysis_strategy,
             data_reader=data_reader,
-            interpol_microstates=self.view.clustering_settings_section.use_interpolation.value,
             current_session_results = self.current_session_results,
         )
 
         test.run("./prototyping/guitest")
         self.update_view()
+
+    def get_analysis_strategy(self, model, alpha, interpolMicrostates) -> AbstractAnalysisStrategy:
+        value = self.view.clustering_settings_section.analysis_strategy.value
+        if value == 'two_groups_common_microstates':
+            print("dupa")
+            return WholeSignalAnalysisStrategy(
+                model=model,
+                alpha=alpha,
+                interpolMicrostates=interpolMicrostates,
+            )
+        elif value == 'two_groups_separate_microstates':
+            print("dupa 1")
+            return WholeSignalAnalysisStrategy(
+                model=model,
+                alpha=alpha,
+                interpolMicrostates=interpolMicrostates,
+            )
+        else:
+            return WholeSignalAnalysisStrategy(
+                model=model,
+                alpha=alpha,
+                interpolMicrostates=interpolMicrostates,
+            )
 
     def update_view(self):
         self.view.clustering_done_text.value = "Clustering done!"
