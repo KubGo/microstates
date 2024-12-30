@@ -5,6 +5,7 @@ from clustering.results import Results
 from test_data_readers.interfaces import AbstractDataSplitter
 from test_data_readers.data_models import Data
 from reporting import generate_comparison_report
+import copy
 
 class AbstractAnalysisStrategy(ABC):
 
@@ -48,6 +49,7 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
         split_data_list = self.splitter.split_data(data)
         before_split_data = split_data_list[0]
         after_split_data = split_data_list[1]
+        results_list = []
 
         results_before_split = self.model.perform_analysis(
             data=before_split_data,
@@ -62,6 +64,7 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             activity=data.activity,
         )
         results_before_split.set_id_and_activity(f"{data.id}-before", data.activity)
+        results_list.append(copy.deepcopy(results_before_split))
 
         results_after_split = self.model.perform_analysis(
             data=after_split_data,
@@ -82,4 +85,6 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             separate_states=True,
             folder_names=folder_names,
         )
-        return [results_before_split, results_after_split]
+        results_list.append(copy.deepcopy(results_after_split))
+
+        return results_list
