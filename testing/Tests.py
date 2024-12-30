@@ -33,19 +33,17 @@ class GUITest(AbstractTest):
     def run(self, results_folder):
         while self.data_reader.has_more():
             data = self.data_reader.next()
-            results = self.analysis_strategy.perform_analysis(
-                data=data
-            )
-            results_path = Path().joinpath(results_folder, data.id, results.method, data.activity) 
+            
+            results_path = Path().joinpath(results_folder,
+                                        data.id,
+                                        self.analysis_strategy.model.method,
+                                        data.activity) 
             results_path.mkdir(parents=True, exist_ok=True)
-
-            results.set_id_and_activity(data.id, data.activity)
-
-            results.generate_results_report(
-                destination_path=results_path.absolute(),
-                method=results.method,
-                activity=data.activity
+            results = self.analysis_strategy.perform_analysis(
+                data=data,
+                path=results_path,
             )
+
             self.current_session_results.add_new_current_session_result(results)
             self.current_session_results.update()
             

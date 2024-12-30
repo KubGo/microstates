@@ -4,6 +4,7 @@ import numpy.typing as npt
 from clustering.results import Results
 from test_data_readers.data_splitters import AbstractDataSplitter, TwoGroupsSplitter
 from test_data_readers.data_models import Data
+from reporting import generate_comparison_report
 
 class AbstractAnalysisStrategy(ABC):
 
@@ -13,7 +14,7 @@ class AbstractAnalysisStrategy(ABC):
         self.interpolMicrostates = interpolMicrostates
 
     @abstractmethod
-    def perform_analysis(self, data: Data) -> Results:
+    def perform_analysis(self, data: Data, path: str) -> Results:
         pass
 
 class WholeSignalAnalysisStrategy(AbstractAnalysisStrategy):
@@ -21,12 +22,19 @@ class WholeSignalAnalysisStrategy(AbstractAnalysisStrategy):
     def __init__(self, model, alpha, interpolMicrostates):
         super().__init__(model, alpha, interpolMicrostates)
 
-    def perform_analysis(self, data: Data):
+    def perform_analysis(self, data: Data, path: str):
         results = self.model.perform_analysis(
             data=data.data,
             clustering=True,
             alpha=self.alpha,
             interpolMicrostates=self.interpolMicrostates
+        )
+        results.set_id_and_activity(data.id, data.activity)
+
+        results.generate_results_report(
+            destination_path=path,
+            method=results.method,
+            activity=data.activity
         )
         return results
     
@@ -36,7 +44,7 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
         super().__init__(model, alpha, interpolMicrostates)
         self.splitter = splitter
 
-    def perform_analysis(self, data):
+    def perform_analysis(self, data, path: str):
         split_data_list = self.splitter.split_data(data.data)
         before_split_data = split_data_list[0]
         after_split_data = split_data_list[1]
@@ -48,6 +56,7 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             alpha=self.alpha,
         )
         results_before_split.generate_results_report(
+            destination_path=path,
             subfolder="before",
             method=self.model.method,
             activity=data.activity,
@@ -58,4 +67,15 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             clustering=True,
             interpolMicrostates=self.interpolMicrostates,
             alpha=self.alpha
+        )
+        results_after_split.generate_results_report(
+            destination_path=path,
+            method=self.model.method,
+            activity=data.activity,
+            subfolder='after'
+        )
+
+        generate_comparison_report(
+            path_to_folder=path,
+            separate_states=True,
         )
