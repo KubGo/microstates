@@ -2,7 +2,7 @@ from abc import ABC, abstractmethod
 from gui.controllers.interfaces import AbstractController
 from clustering.models import model_factory
 from clustering.models.abstractModel import AbstractModel
-from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy, WholeSignalAnalysisStrategy, TwoGroupsSeparateMicrostates
+from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy, WholeSignalAnalysisStrategy, TwoGroupsSeparateMicrostates, TwoGroupsCommonMicrostates
 from test_data_readers.data_readers import AbstractDataReader, FileDataReader
 from test_data_readers.data_identifiers import AbstractDataIdentifier, DelimiteredDataIdentifier, FilePathDataIdentifier
 from test_data_readers.data_read_strategies import AbstractDataReadStrategy, CleanDataReadStrategy, DeleteStartEndDataStrategy
@@ -54,11 +54,23 @@ class ClusteringController(AbstractClusteringControler):
     def get_analysis_strategy(self, model, alpha, interpolMicrostates) -> AbstractAnalysisStrategy:
         value = self.view.clustering_settings_section.analysis_strategy.value
         if value == 'two_groups_common_microstates':
-            print("dupa")
-            return WholeSignalAnalysisStrategy(
+            return TwoGroupsCommonMicrostates(
                 model=model,
                 alpha=alpha,
                 interpolMicrostates=interpolMicrostates,
+                splitter=TwoGroupsSplitter(
+                    frequency=int(self.view.select_files_section.frequency_entry.value),
+                    break_time_period=2,
+                    break_times_dict= {
+                        'Successful_Competition': 38,
+                        'Fitness_Activity': 37,
+                        'Slow_Start': 47,
+                        'Start_high_level_championship': 33,
+                        'Training_Session': 37,
+                        'Your_Home_Venue': 40
+                    },
+                )
+
             )
         elif value == 'two_groups_separate_microstates':
             return TwoGroupsSeparateMicrostates(
