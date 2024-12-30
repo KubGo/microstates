@@ -1,19 +1,8 @@
-from abc import ABC, abstractmethod
+from .interfaces import AbstractDataSplitter
 import numpy.typing as npt
 from test_data_readers.data_models import Data
 from testing.utilities import split_data_at_time
 
-class AbstractDataSplitter(ABC):
-    def __init__(self, frequency: int, break_times_dict: dict, break_time_period: float):
-        self.frequency = frequency
-        self.break_times_dict = break_times_dict
-        self.break_time_period = break_time_period
-
-    @abstractmethod
-    def split_data(self, data: Data) -> list[npt.ArrayLike]:
-        pass
-
-    
 class TwoGroupsSplitter(AbstractDataSplitter):
     
     def __init__(self, frequency, break_times_dict, break_time_period):
@@ -21,7 +10,7 @@ class TwoGroupsSplitter(AbstractDataSplitter):
 
     def split_data(self, data: Data):
         activity = data.activity
-        time = self.break_times_dict[activity]
+        time = self.get_break_time(activity)
         before, after = split_data_at_time(
             data=data.data,
             time=time,
@@ -29,3 +18,8 @@ class TwoGroupsSplitter(AbstractDataSplitter):
             fs=self.frequency
         )
         return [before, after]
+    
+    def get_break_time(self, activity: str):
+        for test_name, break_time in self.break_times_dict.items():
+            if (str(test_name).lower().find(activity.lower())) >= 0:
+                return break_time

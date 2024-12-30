@@ -231,7 +231,8 @@ def get_microstate_time_stats(microstate_times):
     return stats
 
 
-def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_states=False):
+def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_states=False,
+                               folder_names=['imagining', 'listening']):
     # if os.path.isdir(path_to_folder):
     #     print("Give a method folder path that contains following folders:\n"
     #           "\t-images\n"
@@ -243,11 +244,11 @@ def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_st
     if separate_states:
         if not os.path.exists(os.path.join(path_to_folder, "results")):
             os.makedirs(os.path.join(path_to_folder, "results"))
-        if not all(folder in dirs for folder in ["listening", "imagining"]):
-            print("Give a method folder path that contains following folders:\n"
-                  "\t-imagining\n"
-                  "\t-listening\n")
-            raise FileNotFoundError("All needed files were not found.")
+        if not all(folder in dirs for folder in folder_names):
+            print(f"Give a method folder path that contains following folders:\n"
+                  f"\t-{folder_names[0]}\n"
+                  f"\t-{folder_names[1]}\n")
+            raise FileNotFoundError(f"All needed files were not found in path: {path_to_folder}")
 
     else:
         if not all(folder in dirs for folder in ["images", "imagining", "listening", "results"]):
@@ -261,8 +262,8 @@ def generate_comparison_report(path_to_folder, analyse_breaks=False, separate_st
     destination_path = os.path.join(path_to_folder, "results")
 
     # Paths for pickled results
-    path_for_pickle_listening = os.path.join(path_to_folder, "listening", "results")
-    path_for_pickle_imagining = os.path.join(path_to_folder, "imagining", "results")
+    path_for_pickle_listening = os.path.join(path_to_folder, folder_names[0], "results")
+    path_for_pickle_imagining = os.path.join(path_to_folder, folder_names[1], "results")
     results_paths = [path_for_pickle_listening, path_for_pickle_imagining]
 
     template_path = os.path.abspath(__file__)

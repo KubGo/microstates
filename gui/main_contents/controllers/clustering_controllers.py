@@ -2,13 +2,14 @@ from abc import ABC, abstractmethod
 from gui.controllers.interfaces import AbstractController
 from clustering.models import model_factory
 from clustering.models.abstractModel import AbstractModel
-from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy, WholeSignalAnalysisStrategy
+from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy, WholeSignalAnalysisStrategy, TwoGroupsSeparateMicrostates
 from test_data_readers.data_readers import AbstractDataReader, FileDataReader
 from test_data_readers.data_identifiers import AbstractDataIdentifier, DelimiteredDataIdentifier, FilePathDataIdentifier
 from test_data_readers.data_read_strategies import AbstractDataReadStrategy, CleanDataReadStrategy, DeleteStartEndDataStrategy
 from testing import GUITest
 from gui.main_contents.clustering_page import ClusteringPageContent
-from gui.results_observers import CurrentSessionResults, AbstractResultsObserver
+from gui.results_observers import  AbstractResultsObserver
+from test_data_readers.data_splitters import TwoGroupsSplitter
 
 
 class AbstractClusteringControler(AbstractController, AbstractResultsObserver):
@@ -60,11 +61,22 @@ class ClusteringController(AbstractClusteringControler):
                 interpolMicrostates=interpolMicrostates,
             )
         elif value == 'two_groups_separate_microstates':
-            print("dupa 1")
-            return WholeSignalAnalysisStrategy(
+            return TwoGroupsSeparateMicrostates(
                 model=model,
                 alpha=alpha,
                 interpolMicrostates=interpolMicrostates,
+                splitter=TwoGroupsSplitter(
+                    frequency=int(self.view.select_files_section.frequency_entry.value),
+                    break_time_period=2,
+                    break_times_dict= {
+                        'Successful_Competition': 38,
+                        'Fitness_Activity': 37,
+                        'Slow_Start': 47,
+                        'Start_high_level_championship': 33,
+                        'Training_Session': 37,
+                        'Your_Home_Venue': 40
+                    },
+                )
             )
         else:
             return WholeSignalAnalysisStrategy(

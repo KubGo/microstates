@@ -39,13 +39,13 @@ class GUITest(AbstractTest):
                                         self.analysis_strategy.model.method,
                                         data.activity) 
             results_path.mkdir(parents=True, exist_ok=True)
-            results = self.analysis_strategy.perform_analysis(
+            results_list = self.analysis_strategy.perform_analysis(
                 data=data,
                 path=results_path,
             )
-
-            self.current_session_results.add_new_current_session_result(results)
-            self.current_session_results.update()
+            for res in results_list:
+                self.current_session_results.add_new_current_session_result(res)
+                self.current_session_results.update()
             
 
 class Test:
