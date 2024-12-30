@@ -9,48 +9,43 @@ from test_data_readers.data_models import Data
 from testing.utilities import split_data_at_time
 from reporting import generate_comparison_report
 from gui.results_observers import CurrentSessionResults
+from clustering.models.abstractModel.analysis_strategies import AbstractAnalysisStrategy
 
 
 class AbstractTest(ABC):
 
     def __init__(self, 
-                model: AbstractModel,
+                analysis_strategy: AbstractAnalysisStrategy,
                 data_reader: AbstractDataReader,
-                interpol_microstates: bool,
-                current_session_results: CurrentSessionResults):
-        super().__init__()
-        self.model = model
+                current_session_results: CurrentSessionResults,
+                ):
         self.data_reader = data_reader
-        self.interpol_microstates = interpol_microstates
         self.current_session_results = current_session_results
+        self.analysis_strategy = analysis_strategy
 
     @abstractmethod
     def run(self, results_folder: str):
         pass
 
-class WholeDataTest(AbstractTest):
-    def __init__(self, model, data_reader, interpol_microstates, current_session_results):
-        super().__init__(model, data_reader, interpol_microstates, current_session_results)
+class GUITest(AbstractTest):
+    def __init__(self, analysis_strategy, data_reader, current_session_results):
+        super().__init__(analysis_strategy, data_reader, current_session_results)
     def run(self, results_folder):
         while self.data_reader.has_more():
             data = self.data_reader.next()
-            results = self.model.perform_analysis(
-                data=data.data,
-                clustering=True,
-                interpolMicrostates=self.interpol_microstates
-            )
-            results_path = Path().joinpath(results_folder, data.id, results.method, data.activity) 
+            
+            results_path = Path().joinpath(results_folder,
+                                        data.id,
+                                        self.analysis_strategy.model.method,
+                                        data.activity) 
             results_path.mkdir(parents=True, exist_ok=True)
-
-            results.set_id_and_activity(data.id, data.activity)
-
-            results.generate_results_report(
-                destination_path=results_path.absolute(),
-                method=results.method,
-                activity=data.activity
+            results_list = self.analysis_strategy.perform_analysis(
+                data=data,
+                path=results_path,
             )
-            self.current_session_results.add_new_current_session_result(results)
-            self.current_session_results.update()
+            for res in results_list:
+                self.current_session_results.add_new_current_session_result(res)
+                self.current_session_results.update()
             
 
 class Test:
