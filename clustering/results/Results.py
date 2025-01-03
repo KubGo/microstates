@@ -74,7 +74,7 @@ def generate_average_results(path_to_results_folder, destination_path, activity,
     print(transition_matrix)
     print("#" * 50)
     print(microstates[0])
-    result = Results("concated_sportsman", method)
+    result = Results(method)
     result.transition_matrix = transition_matrix
     result.cluster_centers = microstates
     results_path = os.path.join(destination_path, activity)
@@ -111,10 +111,16 @@ class Results:
         self.id= ''
         self.activity = ''
         self.pickle_path = ''
+        self.group = ''
 
-    def set_id_and_activity(self, id:str, activity:str):
+    def set_id_and_activity(self, id: str, activity:str):
         self.id = id
         self.activity = activity
+        
+    def get_name(self) -> str:
+        if self.group:
+            return f"{self.id}-{self.group}-{self.activity}"
+        return f"{self.id}-{self.activity}"
 
     def save_results(self, path):
         """
@@ -453,7 +459,7 @@ def results_factory(filename=None, method=None):
     return Results(method)
 
 
-def load_results(filename):
+def load_results(filename) -> Results:
     """
     Load results file
     Args:

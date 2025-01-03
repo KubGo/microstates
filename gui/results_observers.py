@@ -48,5 +48,5 @@ class CurrentSessionResults:
 
 class ResultsInfo:
     def __init__(self, results: Results):
-        self.results_name = f"{results.id}-{results.activity}"
+        self.results_name = results.get_name()
         self.results_path = results.pickle_path

@@ -19,7 +19,7 @@ class ResultsTab(ft.Tab):
         super().__init__()
         matplotlib.use("svg")
         self.results = load_results(results_path)
-        self.text = f"{self.results.id}- {self.results.activity}"
+        self.text = self.results.get_name()
         
         self.obtained_microstates = ClusteredMicrostatesSeciton(self.results)
         

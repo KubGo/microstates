@@ -57,7 +57,8 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             interpolMicrostates=self.interpolMicrostates,
             alpha=self.alpha,
         )
-        results_before_split.set_id_and_activity(f"{data.id}-before", data.activity)
+        results_before_split.set_id_and_activity(data.id, data.activity)
+        results_before_split.group = 'before'
 
         results_before_split.generate_results_report(
             destination_path=path,
@@ -73,7 +74,8 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             interpolMicrostates=self.interpolMicrostates,
             alpha=self.alpha
         )
-        results_after_split.set_id_and_activity(f"{data.id}-after", data.activity)
+        results_after_split.set_id_and_activity(data.id, data.activity)
+        results_after_split.group = 'after'
 
         results_after_split.generate_results_report(
             destination_path=path,
@@ -114,7 +116,8 @@ class TwoGroupsCommonMicrostates(AbstractAnalysisStrategy):
             interpolMicrostates=self.interpolMicrostates,
             alpha=self.alpha,
         )
-        results_before_split.set_id_and_activity(f"{data.id}-{folder_names[0]}", data.activity)
+        results_before_split.set_id_and_activity(data.id, data.activity)
+        results_before_split.group = 'before'
 
         results_before_split.generate_results_report(
             destination_path=path,
@@ -130,7 +133,8 @@ class TwoGroupsCommonMicrostates(AbstractAnalysisStrategy):
             interpolMicrostates=self.interpolMicrostates,
             alpha=self.alpha
         )
-        results_after_split.set_id_and_activity(f"{data.id}-{folder_names[1]}", data.activity)
+        results_after_split.set_id_and_activity(data.id, data.activity)
+        results_after_split.group = 'after'
 
         results_after_split.generate_results_report(
             destination_path=path,
