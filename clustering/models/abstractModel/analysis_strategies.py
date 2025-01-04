@@ -1,7 +1,7 @@
 from abc import ABC, abstractmethod
 from .AbstractModel import AbstractModel
 import numpy.typing as npt
-from clustering.results import Results
+from clustering.results import Results, ComparisonResults
 from test_data_readers.interfaces import AbstractDataSplitter
 from test_data_readers.data_models import Data
 from reporting import generate_comparison_report
@@ -84,6 +84,9 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             subfolder=folder_names[1]
         )
 
+        comparison_results = ComparisonResults([results_list])
+        
+
         generate_comparison_report(
             path_to_folder=path,
             separate_states=True,
@@ -143,6 +146,8 @@ class TwoGroupsCommonMicrostates(AbstractAnalysisStrategy):
             subfolder=folder_names[1]
         )
         results_list.append(copy.deepcopy(results_after_split))
+
+        comparison_results = ComparisonResults([results_list])
 
         generate_comparison_report(
             path_to_folder=path,
