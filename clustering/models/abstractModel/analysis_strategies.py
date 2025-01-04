@@ -84,7 +84,8 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             subfolder=folder_names[1]
         )
 
-        comparison_results = ComparisonResults([results_list])
+        comparison_results = ComparisonResults(results_list)
+        comparison_results.save(path)
         
 
         generate_comparison_report(
@@ -147,7 +148,8 @@ class TwoGroupsCommonMicrostates(AbstractAnalysisStrategy):
         )
         results_list.append(copy.deepcopy(results_after_split))
 
-        comparison_results = ComparisonResults([results_list])
+        comparison_results = ComparisonResults(results_list)
+        comparison_results.save(path)
 
         generate_comparison_report(
             path_to_folder=path,

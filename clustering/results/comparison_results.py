@@ -1,4 +1,6 @@
 from .Results import Results
+import pickle
+import os
 
 class ComparisonResults:
     
@@ -65,3 +67,13 @@ class ComparisonResults:
             }
             for result in results
         }
+    def save(self, path: str):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        destination_path = os.path.join(
+            path,
+            "comparison-" + "-".join(self.names) + ".pickle"
+        )
+        with open(destination_path, 'wb') as file:
+            pickle.dump(self, file, protocol=pickle.HIGHEST_PROTOCOL)
+        return destination_path
