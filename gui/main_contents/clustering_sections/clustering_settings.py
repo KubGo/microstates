@@ -38,6 +38,7 @@ class ClusteringSettingsSection(AbstractSection):
             expand=True,
             ),
             value="whole_signal_analysis",
+            on_change=lambda e: self.strategy_change(e)
         )
 
         self.controls = [
@@ -45,3 +46,12 @@ class ClusteringSettingsSection(AbstractSection):
             self.use_interpolation,
             self.analysis_strategy
         ]
+
+
+    def strategy_change(self, e: ft.ControlEvent):
+        value = e.control.value
+        if value != 'whole_signal_analysis':
+            self.content_page.grouped_strategy()
+        else:
+            self.content_page.whole_strategy()
+        

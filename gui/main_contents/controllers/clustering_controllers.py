@@ -1,4 +1,4 @@
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from gui.controllers.interfaces import AbstractController
 from clustering.models import model_factory
 from clustering.models.abstractModel import AbstractModel
@@ -160,4 +160,3 @@ class ClusteringController(AbstractClusteringControler):
 
         return data_reader
     
-

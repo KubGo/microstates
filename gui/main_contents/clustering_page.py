@@ -13,6 +13,7 @@ class ClusteringPageContent(AbstractMainContent):
         self.files = []
         self.files_paths = {}
         self.expand=True
+        self.controller = None
 
         self.use_delimiters = False
         self.use_delimiters_checkbox = ft.Checkbox(
@@ -88,3 +89,16 @@ class ClusteringPageContent(AbstractMainContent):
 
     def cluster(self, e):
         self.controller.cluster()
+        
+    def grouped_strategy(self):
+        self.use_delimiters_checkbox.value = True
+        self.use_delimiters_checkbox.disabled = True
+        self.delimiters_section.visible = True
+        self.update()
+        
+    def whole_strategy(self):
+        self.use_delimiters_checkbox.disabled = False
+        self.use_delimiters_checkbox.value = False
+        self.delimiters_section.visible = False
+        self.update()
+        
