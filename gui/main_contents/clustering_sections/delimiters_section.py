@@ -64,7 +64,7 @@ class ExampleText(AbstractFileObserver, ft.Column):
     def __init__(self, section: DelimiterSection):
         super(ft.Column, self).__init__()
         self.section = section
-        self.expand = True
+        self.expand_loose = True
         self.horizontal_alignment = ft.alignment.center
         self.place_holder_text = "Select a file"
         self.file_name = ft.Text(self.place_holder_text, size=20, weight=ft.FontWeight.BOLD)
@@ -76,8 +76,9 @@ class ExampleText(AbstractFileObserver, ft.Column):
             ft.Container(content=
                 ft.Row([
                 ft.Text("Id: ", color=ft.colors.WHITE),
-                self.id
-            ]),
+                self.id,
+            ],
+            expand=True),
             bgcolor='#006f27',
             margin= 2,
             padding= 10,
@@ -120,7 +121,7 @@ class ExampleText(AbstractFileObserver, ft.Column):
         self.update_activity(self.section.activity_index_entry.value, words)
         
     def update_file_name(self, file_name:str):
-        self.file_name.value = file_name
+        self.file_name.value = f"file name: {file_name}"
         self.file_name.update()
     
     def update_id(self, index: str, words: list):

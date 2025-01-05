@@ -9,31 +9,35 @@ class SelectFilesSection(AbstractSection):
         self.pick_files_dialog = ft.FilePicker(on_result=self.pick_files_results)
         self.content_page.page.overlay.append(self.pick_files_dialog)
         self.selected_files = FileList(self)
+        self.alignment = ft.CrossAxisAlignment.BASELINE
         self.frequency_entry = ft.TextField(
             label="Signal frequency",
             value=250,
             hint_text="e.g. 250",
-            on_change= lambda e: check_if_all_numeric(e))
+            on_change= lambda e: check_if_all_numeric(e),
+            expand=False)
         self.observers = [self.content_page]
         
         # Content of section
         self.controls = [
-            ft.Text("Chose a file with EEG data in csv format"),
+            ft.Text("Chose a file with EEG data in csv format",
+                    expand=False),
             ft.ElevatedButton(
                 "Pick files",
                 icon=ft.icons.UPLOAD_FILE,
                 on_click=lambda _: self.pick_files_dialog.pick_files(
                     allow_multiple=True,
                     initial_directory='/home/kuba/Desktop/reordering/data/all_data/P01/P01_Fitness_Activity_clean_signal.csv'
-                )
+                ),
+                expand=False,
             ),
             ft.Container(
                 ft.Column(
                     controls=[self.selected_files],
                     scroll=ft.ScrollMode.AUTO,
-                    expand=True,
+                    expand=False,
                     ),
-                expand=True,
+                width=500,
                 bgcolor=ft.colors.WHITE,
                 border_radius=ft.border_radius.all(5),
             ),
@@ -92,7 +96,7 @@ class FileInterface(ft.Row):
         self.file_list = file_list
         self.name = name
         self.path = path
-        self.expand = True
+        self.expand = False
 
         self.controls = [
             ft.Icon(

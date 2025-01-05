@@ -28,13 +28,14 @@ class AppLayout(Row):
             icon_color=colors.BLUE_GREY_300,
             selected=False,
             selected_icon=icons.ARROW_CIRCLE_RIGHT,
-            on_click=self.toggle_nav_rail)
+            on_click=self.toggle_nav_rail,
+            expand=False)
         self.sidebar = sidebar
         self._active_view = mainContent
         self.body = Container(
             content=self.active_view,
             alignment=alignment.top_center,
-            expand=True
+            expand=9
             )
         self.controls = [
             self.sidebar,

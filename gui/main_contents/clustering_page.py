@@ -75,13 +75,6 @@ class ClusteringPageContent(AbstractMainContent):
         self.signal_cutting_section.visible = e.control.value
         self.signal_cutting_section.update()
 
-    def update_delimiter_label_test(self):
-        if self.files:
-            self.delimiter_labels_test.value = self.files[0]
-        else:
-            self.delimiter_labels_test.value = "Select file to test"
-        self.update()
-    
     def register_for_file_update(self, widget: AbstractFileObserver):
         self.__file_observers.append(widget)
 
