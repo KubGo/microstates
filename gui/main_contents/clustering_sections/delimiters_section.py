@@ -75,11 +75,11 @@ class ExampleText(AbstractFileObserver, ft.Column):
             self.file_name,
             ft.Container(content=
                 ft.Row([
-                ft.Text("Id: ", color=ft.colors.WHITE),
+                ft.Text("Id: ", color=ft.colors.ON_PRIMARY),
                 self.id,
             ],
             expand=True),
-            bgcolor='#006f27',
+            bgcolor=ft.colors.PRIMARY,
             margin= 2,
             padding= 10,
             border_radius=10,
@@ -87,10 +87,10 @@ class ExampleText(AbstractFileObserver, ft.Column):
             ,
             ft.Container(
                 content=ft.Row([
-                ft.Text("Activity: ", color=ft.colors.WHITE),
+                ft.Text("Activity: ", color=ft.colors.ON_PRIMARY),
                 self.activity
             ]),
-            bgcolor='#006f27',
+            bgcolor= ft.colors.PRIMARY,
             margin= 2,
             padding= 10,
             border_radius=10
