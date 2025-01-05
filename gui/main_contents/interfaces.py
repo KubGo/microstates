@@ -1,8 +1,9 @@
 from abc import ABC, abstractmethod
-from flet import Column, Page
+from flet import Column, Page, ScrollMode
 
 class AbstractMainContent(ABC, Column):
 
     def __init__(self, page: Page):
         super(Column, self).__init__()
         self.page = page
+        self.scroll = ScrollMode.ADAPTIVE

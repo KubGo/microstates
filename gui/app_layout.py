@@ -33,9 +33,7 @@ class AppLayout(Row):
         self._active_view = mainContent
         self.body = Container(
             content=self.active_view,
-            margin=10,
-            padding=10,
-            alignment=alignment.center,
+            alignment=alignment.top_center,
             expand=True
             )
         self.controls = [
