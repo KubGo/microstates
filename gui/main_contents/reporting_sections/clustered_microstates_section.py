@@ -1,6 +1,6 @@
 import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
-from .interfaces import AbstractReportingSection
+from interfaces import AbstractReportingSection
 import matplotlib.pyplot as plt
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']

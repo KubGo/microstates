@@ -1,6 +1,6 @@
 import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
-from .interfaces import AbstractReportingSection
+from interfaces import AbstractReportingSection
 import seaborn as sn
 import matplotlib.pyplot as plt
 

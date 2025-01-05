@@ -1,5 +1,5 @@
 import flet as ft
-from .interfaces import AbstractReportingSection
+from interfaces import AbstractReportingSection
 
 class EntropiesSection(AbstractReportingSection):
     def __init__(self, results):
