@@ -22,7 +22,7 @@ def plot_gfp(
     fig = plt.figure()
     plt.plot(t, data, "-k", linewidth=1)
     plt.xlabel("time [s]", fontsize=24)
-    plt.ylabel("potential energy [$\mu$V]", fontsize=24)
+    plt.ylabel("potential energy [µV]", fontsize=24)
     plt.tight_layout()
     return fig
 
@@ -41,7 +41,8 @@ def plot_microstate(
 def plot_transition_matrix(
     transition_matrix: npt.ArrayLike) -> plt.Figure:
     plt.close('all')
-    labels = LABELS[len(transition_matrix)]
+    fig = plt.figure(figsize=(10, 10))
+    labels = LABELS[:len(transition_matrix[0])]
     sn.set(font_scale=3)
     heat_map = sn.heatmap(
         data=transition_matrix,
@@ -50,7 +51,7 @@ def plot_transition_matrix(
         xticklabels=labels,
         yticklabels=labels
     )
-    return heat_map.figure
+    return heat_map.get_figure()
 
 def plot_peaks_on_signal(
     data: npt.ArrayLike,

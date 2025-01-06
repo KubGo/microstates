@@ -2,14 +2,15 @@ import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
 from gui.main_contents.reporting_sections.interfaces import AbstractReportingSection
 import matplotlib.pyplot as plt
-
-LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+from clustering.results.visuals import plot_microstate, LABELS
 
 class ClusteredMicrostatesSeciton(AbstractReportingSection):
     def __init__(self, results):
         super().__init__(results)
 
-        self.microstate_figures = self.results.get_microstates_figures()
+        self.microstate_figures = [
+            plot_microstate(microstate) for microstate in self.results.cluster_centers
+        ]
         microstates_images = [ft.Column(
             [
                 MatplotlibChart(figure, isolated=True),

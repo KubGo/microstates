@@ -3,22 +3,14 @@ from flet.matplotlib_chart import MatplotlibChart
 from gui.main_contents.reporting_sections.interfaces import AbstractReportingSection
 import seaborn as sn
 import matplotlib.pyplot as plt
+from clustering.results.visuals import plot_transition_matrix
 
-LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
 class TransitionMatrixSection(AbstractReportingSection):
 
     def __init__(self, results):
         super().__init__(results)
-        self.transition_matrix = self.results.transition_matrix
-        microstates_labels = LABELS[:len(self.transition_matrix[0])]
-        hm = sn.heatmap(self.transition_matrix,
-                        annot=True,
-                        cmap="coolwarm",
-                        xticklabels=microstates_labels,
-                        yticklabels=microstates_labels)
-        
-        fig = hm.get_figure()
+        fig = plot_transition_matrix(self.results.transition_matrix)
         
         self.controls = [
             ft.Text(
@@ -30,7 +22,7 @@ class TransitionMatrixSection(AbstractReportingSection):
             ft.Divider(thickness=4),
             ft.Row(
                 controls=[
-                    MatplotlibChart(hm.get_figure(),
+                    MatplotlibChart(fig,
                                     expand=True,
                                     isolated=True)
                 ]
