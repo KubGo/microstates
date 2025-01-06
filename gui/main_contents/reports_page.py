@@ -7,6 +7,7 @@ from gui.results_observers import ResultsInfo
 class ReportsPage(AbstractMainContent):
     def __init__(self, page):
         super().__init__(page)
+        self.scroll = False
         self.reports = []
         self.pick_results_dialog = ft.FilePicker(on_result=lambda e: self.pick_result(e))
         self.page.overlay.append(self.pick_results_dialog)
