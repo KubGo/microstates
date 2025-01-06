@@ -5,18 +5,20 @@ import os
 class ComparisonResults:
     
     def __init__(self, results: list[Results]):
-        self.names = self.get_names_list(results)
-        self.probabilities = self.get_probabilities(results)
-        self.entropies = self.get_entropies(results)
-        self.transition_matrices = self.get_transition_matrices(results)
-        self.microstates_maps = self.get_microstates_maps(results)
-        self.signal_part = self.get_signal_part(results)
-        self.test_p_values = self.get_test_p_values(results)
-        self.microstates_chain = self.get_microstates_chains(results)
+        self.n_microstates: int = 4
+        self.names: list[str] = self.get_names_list(results)
+        self.probabilities: dict = self.get_probabilities(results)
+        self.entropies: dict = self.get_entropies(results)
+        self.transition_matrices: dict = self.get_transition_matrices(results)
+        self.microstates_maps: dict = self.get_microstates_maps(results)
+        self.signal_part: dict = self.get_signal_part(results)
+        self.test_p_values: dict = self.get_test_p_values(results)
+        self.microstates_chain: dict = self.get_microstates_chains(results)
        
     def get_names_list(self, results: list[Results]):
         return [result.get_name() for result in results]
     def get_probabilities(self, results: list[Results]):
+        self.n_microstates = len(results[0].empirical_p)
         return {
             result.get_name(): result.empirical_p
             for result in results
