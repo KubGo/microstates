@@ -8,7 +8,7 @@ class ReportsPage(AbstractMainContent):
     def __init__(self, page):
         super().__init__(page)
         self.reports = []
-        self.pick_results_dialog = ft.FilePicker(on_result=self.pick_result)
+        self.pick_results_dialog = ft.FilePicker(on_result=lambda e: self.pick_result(e))
         self.page.overlay.append(self.pick_results_dialog)
         self.placeholder_tab = ft.Tab(
             text="No report selected",
