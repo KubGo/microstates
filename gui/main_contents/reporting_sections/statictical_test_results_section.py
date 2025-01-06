@@ -1,5 +1,5 @@
 import flet as ft
-from interfaces import AbstractReportingSection
+from gui.main_contents.reporting_sections.interfaces import AbstractReportingSection
 from decimal import Decimal
 
 
