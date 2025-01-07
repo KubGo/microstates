@@ -11,7 +11,6 @@ class TransitionMatrixSection(AbstractReportingSection):
     def __init__(self, results):
         super().__init__(results)
         fig = plot_transition_matrix(self.results.transition_matrix)
-        
         self.controls = [
             ft.Text(
                 "Transition matrix",
@@ -25,7 +24,8 @@ class TransitionMatrixSection(AbstractReportingSection):
                     MatplotlibChart(fig,
                                     expand=True,
                                     isolated=True)
-                ]
+                ],
+                height=500,
             ),
             ft.Divider(thickness=4),
         ]
