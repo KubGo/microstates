@@ -1,4 +1,4 @@
-from .Temp import Results
+from .results import Results
 import pickle
 import os
 

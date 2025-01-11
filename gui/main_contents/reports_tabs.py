@@ -1,4 +1,4 @@
-from clustering.results.Temp import load_results, Results
+from clustering.results.results import load_results, Results
 from clustering.results.comparison_results import ComparisonResults
 import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
