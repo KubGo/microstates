@@ -64,8 +64,7 @@ class ReportsPage(AbstractMainContent):
             self.add_new_report(file_path)
 
     def add_new_report(self, file_path: str):
-        self.results_factory.get_results_tab(file_path)
-        tab = ResultsTab(file_path)
+        tab = self.results_factory.get_results_tab(file_path)
         if self.placeholder_tab in self.reports_tabs.tabs:
             self.reports_tabs.tabs.remove(self.placeholder_tab)
         self.reports_tabs.tabs.append(tab)

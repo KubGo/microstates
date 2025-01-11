@@ -3,7 +3,7 @@ from flet.matplotlib_chart import MatplotlibChart
 from gui.main_contents.reporting_sections.interfaces import AbstractReportingSection
 import matplotlib.pyplot as plt
 from clustering.results.visuals import plot_microstate, LABELS
-from clustering.results.comparison_results import ComparisonResults
+from clustering.results.results import ComparisonResults
 
 class ClusteredMicrostatesSeciton(AbstractReportingSection):
     def __init__(self, results):

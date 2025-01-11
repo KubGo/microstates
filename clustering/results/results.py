@@ -13,11 +13,16 @@ from matplotlib.animation import ArtistAnimation
 from matplotlib.patches import Patch
 import seaborn as sn
 from jinja2 import Environment, FileSystemLoader
-
+from abc import ABC
+from enum import Enum
 from .utilities import eeg_to_map, match_data_folder
 from reporting import save_report, generate_comparison_report
 from clustering.results.visuals import plot_microstate
 
+class ResultType(Enum):
+    NO_RESULT = 0
+    SINGLE_RESULT = 1
+    COMPARISON_RESULTS = 2
 
 def generate_average_results(path_to_results_folder, destination_path, activity, method, subfolder=""):
     """
@@ -82,9 +87,12 @@ def generate_average_results(path_to_results_folder, destination_path, activity,
     result.save_microstates_images(results_path)
     result.save_transition_matrix(results_path)
 
+class AbstractResults(ABC):
+    def __init__(self):
+        super().__init__()
+        self.type = ResultType.NO_RESULT
 
-
-class Results:
+class Results(AbstractResults):
     cluster_centers = None
     clusters_chain = []
     empirical_p = []
@@ -112,6 +120,7 @@ class Results:
         self.activity = ''
         self.pickle_path = ''
         self.group = ''
+        self.type = ResultType.SINGLE_RESULT
 
     def set_id_and_activity(self, id: str, activity:str):
         self.id = id
@@ -634,3 +643,82 @@ def get_microstate_time_stats(microstate_times):
             "hist": np.array(np.unique(times, return_counts=True)).T
         }
     return stats
+
+class ComparisonResults(AbstractResults):
+    
+    def __init__(self, results: list[Results]):
+        self.type = ResultType.COMPARISON_RESULTS
+        self.n_microstates: int = 3
+        self.names: list[str] = self.get_names_list(results)
+        self.probabilities: dict = self.get_probabilities(results)
+        self.entropies: dict = self.get_entropies(results)
+        self.transition_matrices: dict = self.get_transition_matrices(results)
+        self.microstates_maps: dict = self.get_microstates_maps(results)
+        self.signal_part: dict = self.get_signal_part(results)
+        self.test_p_values: dict = self.get_test_p_values(results)
+        self.microstates_chain: dict = self.get_microstates_chains(results)
+       
+    def get_names_list(self, results: list[Results]):
+        return [result.get_name() for result in results]
+    def get_probabilities(self, results: list[Results]):
+        self.n_microstates = len(results[-1].empirical_p)
+        return {
+            result.get_name(): result.empirical_p
+            for result in results
+        }
+
+    def get_entropies(self, results: list[Results]):
+        return {
+            result.get_name(): {
+                "h_max": result.h_max,
+                "h": result.h,
+                "h_mc": result.h_mc,
+            }
+            for result in results
+        }
+    
+    def get_transition_matrices(self, results: list[Results]):
+        return {
+            result.get_name(): result.transition_matrix
+            for result in results
+        }
+    
+    def get_microstates_maps(self, results: list[Results]):
+        return {
+            result.get_name(): result.cluster_centers
+            for result in results
+        }
+    
+    def get_signal_part(self, results: list[Results]):
+        return {
+            result.get_name(): result.alpha_wave
+            for result in results
+        }
+
+    def get_microstates_chains(self, results: list[Results]):
+        return {
+            result.get_name(): result.clusters_chain
+            for result in results
+        }
+
+    def get_test_p_values(self, results: list[Results]):
+        return {
+            result.get_name(): {
+                "markov-1": result.p_markov_test_0,
+                "markov0": result.p_markov_test_1,
+                "markov1": result.p_markov_test_2,
+                "homogenity": result.p_conditional_homogenity,
+                "symmetry": result.p_symmetry_test,
+            }
+            for result in results
+        }
+    def save(self, path: str):
+        if not os.path.exists(path):
+            os.makedirs(path)
+        destination_path = os.path.join(
+            path,
+            "comparison-" + "-".join(self.names) + ".pickle"
+        )
+        with open(destination_path, 'wb') as file:
+            pickle.dump(self, file, protocol=pickle.HIGHEST_PROTOCOL)
+        return destination_path

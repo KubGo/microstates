@@ -1,7 +1,7 @@
 import flet as ft
 import matplotlib.pyplot as plt
 from gui.main_contents.reporting_sections.interfaces import AbstractReportingSection
-from clustering.results.comparison_results import ComparisonResults
+from clustering.results.results import ComparisonResults
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 COLORS = [ft.colors.RED, ft.colors.BLUE, ft.colors.GREEN, ft.colors.YELLOW,
