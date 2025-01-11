@@ -14,7 +14,7 @@ from matplotlib.patches import Patch
 import seaborn as sn
 from jinja2 import Environment, FileSystemLoader
 
-from . utilities import eeg_to_map, match_data_folder
+from .utilities import eeg_to_map, match_data_folder
 from reporting import save_report, generate_comparison_report
 from clustering.results.visuals import plot_microstate
 

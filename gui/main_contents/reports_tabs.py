@@ -1,4 +1,5 @@
-from clustering.results.Results import load_results, Results
+from clustering.results.Temp import load_results, Results
+from clustering.results.comparison_results import ComparisonResults
 import flet as ft
 from flet.matplotlib_chart import MatplotlibChart
 from flet.plotly_chart import PlotlyChart
@@ -13,6 +14,16 @@ from .reporting_sections.entropies_section import EntropiesSection
 from .reporting_sections.statictical_test_results_section import StaticticalTestResultsSection
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
+
+class ResultsTabFactory:
+    def __init__(self):
+        pass
+
+    def get_results_tab(self, results_path: str) -> ft.Tab:
+        results = load_results(results_path)
+        print(type(results))
+        print(f"Results class: {type(Results)}")
+        print(f"Comparison results type: {type(ComparisonResults)}")
 
 class ResultsTab(ft.Tab):
     def __init__(self, results_path: str):

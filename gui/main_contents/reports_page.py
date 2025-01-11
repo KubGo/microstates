@@ -1,12 +1,13 @@
 from .interfaces import AbstractMainContent
 import flet as ft
-from .reports_tabs import ResultsTab
+from .reports_tabs import ResultsTab, ResultsTabFactory
 from pathlib import Path
 from gui.results_observers import ResultsInfo
 
 class ReportsPage(AbstractMainContent):
     def __init__(self, page):
         super().__init__(page)
+        self.results_factory = ResultsTabFactory()
         self.scroll = False
         self.reports = []
         self.pick_results_dialog = ft.FilePicker(on_result=lambda e: self.pick_result(e))
@@ -63,6 +64,7 @@ class ReportsPage(AbstractMainContent):
             self.add_new_report(file_path)
 
     def add_new_report(self, file_path: str):
+        self.results_factory.get_results_tab(file_path)
         tab = ResultsTab(file_path)
         if self.placeholder_tab in self.reports_tabs.tabs:
             self.reports_tabs.tabs.remove(self.placeholder_tab)
