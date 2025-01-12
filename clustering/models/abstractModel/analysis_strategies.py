@@ -84,6 +84,8 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             subfolder=folder_names[1]
         )
 
+        results_list.append(copy.deepcopy(results_after_split))
+
         comparison_results = ComparisonResults(results_list)
         comparison_results.save(path)
         
@@ -93,7 +95,7 @@ class TwoGroupsSeparateMicrostates(AbstractAnalysisStrategy):
             separate_states=True,
             folder_names=folder_names,
         )
-        results_list.append(copy.deepcopy(results_after_split))
+        results_list.append(copy.deepcopy(comparison_results))
 
         return results_list
     
@@ -156,5 +158,6 @@ class TwoGroupsCommonMicrostates(AbstractAnalysisStrategy):
             separate_states=True,
             folder_names=folder_names,
         )
+        results_list.append(copy.deepcopy(comparison_results))
 
         return results_list
