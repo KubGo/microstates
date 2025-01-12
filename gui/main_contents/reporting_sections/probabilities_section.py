@@ -54,9 +54,7 @@ class GroupProbabilitiesSection(AbstractReportingSection):
             ),
             ft.Divider(thickness=4),
             ft.ResponsiveRow(
-                controls=[
-                    charts
-                ]
+                controls=charts
             ),
             ft.Divider(thickness=4),
         ]
