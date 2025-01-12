@@ -44,12 +44,12 @@ class GroupsEntropiesSection(AbstractReportingSection):
         entropies_tables = []
         for name in self.names:
             entropies_tables.append(ft.Column(
-                [ft.Text(f"{name}")],
+                [ft.Text(f"{name}"),
                 get_entropies_table(
                     self.entropies[name]['h'],
                     self.entropies[name]['h_max'],
                     self.entropies[name]['h_mc']
-                )
+                )]
             ))
         tables = [ft.Row(entropies_tables)]
         self.controls = header + tables + [ft.Divider(thickness=4)]
