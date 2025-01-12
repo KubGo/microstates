@@ -1,6 +1,6 @@
 from abc import ABC, abstractmethod
 from gui.controllers.interfaces import AbstractController
-from clustering.results import Results
+from clustering.results.results import Results, AbstractResults,  ComparisonResults
 import flet as ft
 
 class AbstractResultsObserver(ABC):
@@ -43,10 +43,10 @@ class CurrentSessionResults:
             observer.results_update()
         self.page.update()
 
-    def add_new_current_session_result(self, results: Results):
+    def add_new_current_session_result(self, results: AbstractResults):
         self.results.append(ResultsInfo(results))
 
 class ResultsInfo:
-    def __init__(self, results: Results):
+    def __init__(self, results: AbstractResults):
         self.results_name = results.get_name()
         self.results_path = results.pickle_path
