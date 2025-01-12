@@ -651,7 +651,8 @@ class ComparisonResults(AbstractResults):
     
     def __init__(self, results: list[Results]):
         self.type = ResultType.COMPARISON_RESULTS
-        self.n_microstates: int = 3
+        self.n_microstates: int = 4
+        self.alpha: float = 0.01
         self.names: list[str] = self.get_names_list(results)
         self.probabilities: dict = self.get_probabilities(results)
         self.entropies: dict = self.get_entropies(results)
@@ -705,11 +706,12 @@ class ComparisonResults(AbstractResults):
         }
 
     def get_test_p_values(self, results: list[Results]):
+        self.alpha = results[-1].alpha
         return {
             result.get_name(): {
-                "markov-1": result.p_markov_test_0,
-                "markov0": result.p_markov_test_1,
-                "markov1": result.p_markov_test_2,
+                "markov0": result.p_markov_test_0,
+                "markov1": result.p_markov_test_1,
+                "markov2": result.p_markov_test_2,
                 "homogenity": result.p_conditional_homogenity,
                 "symmetry": result.p_symmetry_test,
             }

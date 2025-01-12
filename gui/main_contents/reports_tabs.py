@@ -10,7 +10,7 @@ from .reporting_sections.transition_matrix_section import TransitionMatrixSectio
 from .reporting_sections.clustered_microstates_section import ClusteredMicrostatesSeciton, GroupsMicrostatesSection
 from .reporting_sections.probabilities_section import ProbabilitiesSection, GroupProbabilitiesSection
 from .reporting_sections.entropies_section import EntropiesSection, GroupsEntropiesSection
-from .reporting_sections.statictical_test_results_section import StaticticalTestResultsSection
+from .reporting_sections.statictical_test_results_section import StaticticalTestResultsSection, GroupsStatisticalTestsResultsSection
 
 LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H']
 
@@ -72,7 +72,7 @@ class ComparisonResultsTab(ft.Tab):
         
         self.entropies_section = GroupsEntropiesSection(self.results)
 
-        # self.statistical_tests_results = StaticticalTestResultsSection(self.results)
+        self.statistical_tests_results = GroupsStatisticalTestsResultsSection(self.results)
 
         self.report_content = ft.Column(
             controls=[
@@ -80,7 +80,7 @@ class ComparisonResultsTab(ft.Tab):
                 self.prob_pie_chart,
                 self.transition_matrix_section,
                 self.entropies_section,
-            #    self.statistical_tests_results,
+               self.statistical_tests_results,
             ],
             scroll=True,
         )
