@@ -13,7 +13,7 @@ from matplotlib.animation import ArtistAnimation
 from matplotlib.patches import Patch
 import seaborn as sn
 from jinja2 import Environment, FileSystemLoader
-from abc import ABC
+from abc import ABC, abstractmethod
 from enum import Enum
 from .utilities import eeg_to_map, match_data_folder
 from reporting import save_report, generate_comparison_report
@@ -91,6 +91,11 @@ class AbstractResults(ABC):
     def __init__(self):
         super().__init__()
         self.type = ResultType.NO_RESULT
+        self.pickle_path = ""
+
+    @abstractmethod
+    def get_name(self) -> str:
+        pass
 
 class Results(AbstractResults):
     cluster_centers = None
@@ -457,7 +462,7 @@ def results_factory(filename=None, method=None):
     return Results(method)
 
 
-def load_results(filename) -> Results:
+def load_results(filename) -> AbstractResults:
     """
     Load results file
     Args:
@@ -469,8 +474,6 @@ def load_results(filename) -> Results:
     if filename:
         with open(filename, 'rb') as file:
             results = pickle.load(file)
-            if not isinstance(results, Results):
-                raise TypeError(f"Unpickled object is not of type {Results}")
             return results
 
 
@@ -721,4 +724,8 @@ class ComparisonResults(AbstractResults):
         )
         with open(destination_path, 'wb') as file:
             pickle.dump(self, file, protocol=pickle.HIGHEST_PROTOCOL)
+        self.pickle_path = destination_path
         return destination_path
+    
+    def get_name(self):
+        return "comparison-" + "-".join(self.names)
