@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 import matplotlib
 import plotly.express as px
 import plotly.graph_objects as go
-from .reporting_sections.transition_matrix_section import TransitionMatrixSection
+from .reporting_sections.transition_matrix_section import TransitionMatrixSection, GroupsTransitionMatriciesSection
 from .reporting_sections.clustered_microstates_section import ClusteredMicrostatesSeciton, GroupsMicrostatesSection
 from .reporting_sections.probabilities_section import ProbabilitiesSection, GroupProbabilitiesSection
 from .reporting_sections.entropies_section import EntropiesSection, GroupsEntropiesSection
@@ -68,7 +68,7 @@ class ComparisonResultsTab(ft.Tab):
         
         self.prob_pie_chart = GroupProbabilitiesSection(self.results)
 
-        # self.transition_matrix_section = TransitionMatrixSection(self.results)
+        self.transition_matrix_section = GroupsTransitionMatriciesSection(self.results)
         
         self.entropies_section = GroupsEntropiesSection(self.results)
 
@@ -78,7 +78,7 @@ class ComparisonResultsTab(ft.Tab):
             controls=[
                 self.obtained_microstates,
                 self.prob_pie_chart,
-            #    self.transition_matrix_section,
+                self.transition_matrix_section,
                 self.entropies_section,
             #    self.statistical_tests_results,
             ],
