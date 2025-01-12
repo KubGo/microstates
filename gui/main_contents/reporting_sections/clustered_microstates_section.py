@@ -37,7 +37,7 @@ class GroupsMicrostatesSection(AbstractReportingSection):
         super().__init__(results)
         self.results = results
         
-        self.microstates_figures = self.results.microstates_maps
+        self.microstates_maps = self.results.microstates_maps
         self.names = self.results.names
         labels = [
             ft.Text('Group'),
@@ -50,10 +50,10 @@ class GroupsMicrostatesSection(AbstractReportingSection):
             expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER
         )]
         for i in range(self.results.n_microstates):
-            microstates = [ft.Text(LABELS[i], size=16)]
+            microstates = [ft.Text(LABELS[i], expand=True, size=16, text_align=ft.TextAlign.CENTER)]
             for name in self.names:
                 microstates.append(MatplotlibChart(
-                    self.microstates_figures[name][i]
+                    plot_microstate(self.microstates_maps[name][i])
                 ))
             microstates_images.append(
                 ft.Column(
@@ -70,6 +70,8 @@ class GroupsMicrostatesSection(AbstractReportingSection):
                     ),
             ft.Divider(thickness=4),
             ft.Row(controls=microstates_images,
-            spacing = 30),
+            spacing = 30,
+            vertical_alignment=ft.CrossAxisAlignment.CENTER,
+            expand=True),
             ft.Divider(thickness=4),
         ]
