@@ -36,31 +36,45 @@ class GroupsMicrostatesSection(AbstractReportingSection):
     def __init__(self, results: ComparisonResults):
         super().__init__(results)
         self.results = results
-        
+        self.expand = True
         self.microstates_maps = self.results.microstates_maps
         self.names = self.results.names
-        labels = [
-            ft.Text('Group'),
-        ]
+        labels = ft.Row([
+                    ft.Text(
+                        value='Group',
+                        expand=1,
+                        text_align=ft.TextAlign.CENTER),
+                ],
+                vertical_alignment=ft.CrossAxisAlignment.START,
+                alignment=ft.alignment.top_center,
+                expand=True)
+        for i in range(results.n_microstates):
+            labels.controls.append(ft.Text(
+                value=f"{LABELS[i]}",
+                expand=2,
+                size=16,
+                text_align=ft.TextAlign.CENTER,
+                weight=ft.FontWeight.BOLD))
+        microstates_images = []
+
         for name in self.names:
-            labels.append(ft.Text(name))
-            
-        microstates_images = [ft.Column(
-            controls=labels,
-            expand=True, horizontal_alignment=ft.CrossAxisAlignment.CENTER
-        )]
-        for i in range(self.results.n_microstates):
-            microstates = [ft.Text(LABELS[i], expand=True, size=16, text_align=ft.TextAlign.CENTER)]
-            for name in self.names:
-                microstates.append(MatplotlibChart(
-                    plot_microstate(self.microstates_maps[name][i])
-                ))
-            microstates_images.append(
-                ft.Column(
-                    controls=microstates,
-                    expand=True,
-                    horizontal_alignment=ft.CrossAxisAlignment.CENTER,
-            ))
+            microstates_row = ft.Row(
+                controls=[ft.Text(
+                    value=name, 
+                    expand=True, 
+                    size=16,
+                    text_align=ft.TextAlign.CENTER,
+                    weight=ft.FontWeight.BOLD)],
+                expand=1,
+                vertical_alignment=ft.CrossAxisAlignment.CENTER,
+                )
+            for microstate in self.microstates_maps[name]:
+                microstates_row.controls.append(MatplotlibChart(
+                                    plot_microstate(microstate),
+                                    expand=2,
+                                ))
+            microstates_images.append(microstates_row)
+
         
         self.controls = [
                 ft.Text("Obtained microstates",
@@ -69,9 +83,5 @@ class GroupsMicrostatesSection(AbstractReportingSection):
                     expand=True,
                     ),
             ft.Divider(thickness=4),
-            ft.Row(controls=microstates_images,
-            spacing = 30,
-            vertical_alignment=ft.CrossAxisAlignment.CENTER,
-            expand=True),
-            ft.Divider(thickness=4),
-        ]
+            labels
+        ] + microstates_images
