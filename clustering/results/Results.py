@@ -137,7 +137,7 @@ class Results:
         fig = plt.figure(1, figsize=(20, 5))
         plt.plot(t, data, "-k", linewidth=1)
         plt.xlabel("time [s]", fontsize=24)
-        plt.ylabel("potential energy [$\mu$V]", fontsize=24)
+        plt.ylabel("GFP [$\mu$V]", fontsize=24)
         plt.tight_layout()
         destination_path = os.path.join(path, "pca_alpha_wave.jpg")
         plt.savefig(destination_path)
