@@ -45,7 +45,7 @@ class GroupsTransitionMatriciesSection(AbstractReportingSection):
                     ft.Text(name,
                         size=16,
                         text_align=ft.TextAlign.CENTER,
-                        weight=ft.FontWeight.BOLD
+                        weight=ft.FontWeight.BOLD,
                         ),
                     MatplotlibChart(plot_transition_matrix(transition_matricies[name]),
                                     expand = True,

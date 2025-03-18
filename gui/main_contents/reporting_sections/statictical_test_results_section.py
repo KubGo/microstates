@@ -47,7 +47,10 @@ class GroupsStatisticalTestsResultsSection(AbstractReportingSection):
             stats = statistical_test_results[name]
             self.controls.append(ft.Column(
                 [
-                    ft.Text(name),
+                    ft.Text(name,
+                        size=16,
+                        text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.BOLD,),
                     get_p_values_table(
                         markov_0=stats['markov0'],
                         markov_1=stats['markov1'],
@@ -55,7 +58,8 @@ class GroupsStatisticalTestsResultsSection(AbstractReportingSection):
                         homogenity=stats['homogenity'],
                         symmetry=stats['symmetry']
                     )
-                ]
+                ],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             ))
         self.controls.append(ft.Divider(thickness=4))
         

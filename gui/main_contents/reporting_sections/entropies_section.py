@@ -31,6 +31,7 @@ class EntropiesSection(AbstractReportingSection):
 class GroupsEntropiesSection(AbstractReportingSection):
     def __init__(self, results: ComparisonResults):
         super().__init__(results)
+        self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         self.results = results
         self.names = self.results.names
         self.entropies = self.results.entropies
@@ -44,12 +45,18 @@ class GroupsEntropiesSection(AbstractReportingSection):
         entropies_tables = []
         for name in self.names:
             entropies_tables.append(ft.Column(
-                [ft.Text(f"{name}"),
+                [ft.Text(f"{name}",
+                        size=16,
+                        text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.BOLD,
+                        ),
                 get_entropies_table(
                     self.entropies[name]['h'],
                     self.entropies[name]['h_max'],
                     self.entropies[name]['h_mc']
-                )]
+                )],
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
+                expand=2,
             ))
         tables = [ft.Row(entropies_tables)]
         self.controls = header + tables + [ft.Divider(thickness=4)]
