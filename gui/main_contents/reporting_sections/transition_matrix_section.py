@@ -36,17 +36,24 @@ class GroupsTransitionMatriciesSection(AbstractReportingSection):
         super().__init__(results)
         self.results = results
         names = results.names
-
+        self.horizontal_alignment = ft.CrossAxisAlignment.CENTER
         transition_matricies = results.transition_matrices
 
         images = [
             ft.Column(
                 [
-                    ft.Text(name),
+                    ft.Text(name,
+                        size=16,
+                        text_align=ft.TextAlign.CENTER,
+                        weight=ft.FontWeight.BOLD
+                        ),
                     MatplotlibChart(plot_transition_matrix(transition_matricies[name]),
                                     expand = True,
-                                    isolated=True)
-                ]
+                                    isolated=True,
+                                    )
+                ],
+                expand=2,
+                horizontal_alignment=ft.CrossAxisAlignment.CENTER,
             )
             for name in names
         ]
