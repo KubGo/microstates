@@ -17,7 +17,7 @@ class ProbabilitiesSection(AbstractReportingSection):
                 "Probabilities of microstates",
                 size=36,
                 weight=ft.FontWeight.BOLD,
-                expand=True
+                expand=True,
             ),
             ft.Divider(thickness=4),
             ft.Row(
@@ -35,16 +35,23 @@ class GroupProbabilitiesSection(AbstractReportingSection):
     def __init__(self, results: ComparisonResults):
         super().__init__(results)
         self.results = results
-
         names = self.results.names
         charts = []
         for name in names:
             charts.append(ft.Column([
-                ft.Text(f"{name}"),
+                ft.Text(f"{name}",
+                text_align=ft.TextAlign.CENTER,
+                expand=2,
+                weight=ft.FontWeight.BOLD,
+                size=16
+                ),
                 draw_probabilities_pie_chart(
                     self.results.probabilities[name]
                 )
-            ]))
+            ],
+            alignment=ft.MainAxisAlignment.CENTER,
+            horizontal_alignment=ft.CrossAxisAlignment.CENTER
+            ))
         self.controls = [
             ft.Text(
                 "Probabilities of microstates",
